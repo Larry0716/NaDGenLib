@@ -1,3 +1,13 @@
+/**
+ * @file genlib.h
+ * @author Larry Green (larry0716@163.com)
+ * @brief 这是 NaDGenLib 的基础头文件
+ * @details 事实上，这并不是非常好的代码，我很抱歉
+ * @version 0.0.1
+ * @date 2023-03-15
+ * @note 感谢洛谷团队的 CYaRon 项目带给我的启发
+ * @copyright Copyright (c) 2023
+ */
 #ifndef LARRY76_NADGENLIB_MODULE_GENLIB_HEADER
 #define LARRY76_NADGENLIB_MODULE_GENLIB_HEADER
 
