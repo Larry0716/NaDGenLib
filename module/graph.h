@@ -17,6 +17,7 @@ namespace Generator
     using std::vector;
     using std::map;
     using std::string;
+    using std::endl;
 
     typedef std::pair<int,int> pii;
     /**
@@ -36,10 +37,7 @@ namespace Generator
                   bool undirectedMap = false, bool weightedMap = false, 
                   bool muiltiedgeCheck = false, bool loopCheck = false)
             {
-                ++verCount;
-                head = new int[verCount];
-                id = new int[verCount];
-                --verCount;
+                id = new int[ verCount + 1 ];
                 vertexCount = verCount;
                 undirectedMapSwitch = undirectedMap;
                 muiltiedgeCheckSwitch = muiltiedgeCheck;
@@ -48,17 +46,21 @@ namespace Generator
                 clear();
             }
             /**
+             * @brief Graph 类的析构函数，用于防止 Graph 类引发内存泄漏
+            */
+            ~Graph(){
+                delete[] id;
+            }
+            /**
              * @brief 用于清空图
              * @warning 注意，清空图并不意味着清空了其占用的内存空间。
             */
             void clear()
             {
-                for(register int i = 0; i < vertexCount; ++i)
+                for(register int i = 0; i <= vertexCount; ++i)
                     id[i] = i;
-                memset( head, -1, vertexCount * sizeof(int) );
-                ver.clear();
-                next.clear();
-                edge.clear();
+                hashtable.clear();
+                edgeContainer.clear();
             }
             /**
              * @brief 添加一条边
@@ -73,8 +75,6 @@ namespace Generator
                 if(!loopChecker(from, to))
                     return ;
                 __add_edge(from, to);
-                if(undirectedMapSwitch)
-                    __add_edge(to, from);
             }
             /**
              * @brief 添加一条带权边
@@ -90,44 +90,39 @@ namespace Generator
                 if(!loopChecker(from, to))
                     return ;
                 __add_edge(from, to, weight);
-                if(undirectedMapSwitch)
-                    __add_edge(to, from, weight);
             }
-            void output(bool shuffleOutput = true){
+            /**
+             * @brief 输出图
+             * @param shuffleOutput 是否启用乱序节点输出
+            */
+            void output(bool shuffleOutput = true)
+            {
                 std::ofstream &cout = *rout;
                 if(shuffleOutput)
                     shuffle();
-                for(int i = 0; i <= vertexCount; ++i){
-                    for(int j = head[i]; ~j; j = next[j]){
-                        cout << id[i] << ' ' << id[ver[j]];
-                        if(weightedMapSwitch)
-                            cout << ' ' << edge[j];
-                        cout << std::endl;
-                    }
+                for(auto c : edgeContainer) {
+                    if(weightedMapSwitch)
+                        cout << id[c.from] << ' ' << id[c.to] << ' ' << c.weight << endl;
+                    else
+                        cout << id[c.from] << ' ' << id[c.to] << endl;
                 }
             }
         protected:
-            void shuffle(){
+            void shuffle()
+            {
                 Random rnd;
-                for(int i = 1; i <= vertexCount; ++i){
-                    int oth = rnd.irand(1,n);
+                for(int i = 1; i <= vertexCount; ++i) {
+                    int oth = rnd.irand(1,vertexCount);
                     std::swap(id[i],id[oth]);
                 }
             }
             inline void __add_edge(int from, int to, int weight)
             {
-                ++tot;
-                ver.push_back(to);
-                edge.push_back(weight);
-                next.push_back(head[from]);
-                head[from] = next[tot];
+                edgeContainer.push_back((EDGE){from,to,weight});
             }
             inline void __add_edge(int from, int to)
             {
-                ++tot;
-                ver.push_back(to);
-                next.push_back(head[from]);
-                head[from] = next[tot];
+                edgeContainer.push_back((EDGE){from,to,1});
             }
             /**
              * @brief 重边检查器
@@ -138,7 +133,7 @@ namespace Generator
             {
                 if(!muiltiedgeCheckSwitch)
                     return true;
-                if(from>to)
+                if(from > to && undirectedMapSwitch)
                     std::swap(from,to);
                 if(hashtable[{from, to}]) {
                     fprintf(stderr, "Edge <%d,%d> was unable to pass muiltiedge check. Ignored.\n", from, to);
@@ -163,57 +158,106 @@ namespace Generator
             bool undirectedMapSwitch;
             bool weightedMapSwitch;
             int vertexCount;
-            int tot = 0;
             int *id;
-            int *head;
-            vector<int>next;
-            vector<int>edge;
-            vector<int>ver;
+            struct EDGE{
+                int from, to, weight;
+            };
+            vector<EDGE> edgeContainer;
             map<pii,bool> hashtable;
     };
     /**
      * @brief 生成一颗无根树
     */
-    class NoRootTree{
+    class NoRootTree : public Graph{
         public:
-            NoRootTree(int n){
-                ver = new int[n+1];
-                this->n = n;
-                for(int i=1;i<=n;i++)
-                    ver[i] = i;
+            /**
+             * @brief NoRootTree 的带边权构造函数
+             * @param verCount 点数
+             * @param vmin 边权最小值
+             * @param vmax 边权最大值
+             * @warning 注意，该构造函数与其另一个重载有本质不同
+             * @warning 
+            */
+            NoRootTree(int verCount, int vmin, int vmax)
+                :Graph(verCount, true, true, true, true)
+            {
+                vertexCount = verCount;
+                weightedTreeSwitch = true;
+                this->vmin = vmin;
+                this->vmax = vmax;
+                clear();
             }
-            void Output(){
-                shuffle();
-                std::ofstream &fout = *(rout);
-                for(int i=2;i<n;i++){
-                    int fa = rnd.irand(1,i-1);
-                    fout<<ver[i]<<' '<<ver[fa]<<'\n';
-                }
+            NoRootTree(int verCount)
+                :Graph(verCount, true, false, true, true)
+            {
+                vertexCount = verCount;
+                weightedTreeSwitch = false;
+                clear();
             }
-            void Output(int wmin,int wmax){
-                shuffle();
-                std::ofstream &fout = *(rout);
-                for(int i=2;i<n-1;i++){
-                    int fa = rnd.irand(1,i-1);
-                    fout<<ver[i]<<' '<<ver[fa]<<' '<<rnd.irand(wmin,wmax)<<'\n';
-                }
+            void Generate(){
+                clear();
+                int mode = rnd.irand(1,120);
+                _Generate(mode);
             }
         protected:
-            void shuffle(){
-                for(int i=1;i<=n;i++){
-                    int oth = rnd.irand(1,n);
-                    swap(ver[i],ver[oth]);
+            void _Generate(int mode){
+                if(mode<=500)
+                    Daisy();
+                else if(mode <= 100)
+                    Chain();
+                else if(mode <= 25)
+                    ChainWithChain();
+                else if(mode <= 40)
+                    DaisyWithDaisy();
+                else if(mode <= 60)
+                    ChainWithDaisy();
+                else if(mode <= 75)
+                    CompleteKBTree();
+                else if(mode <= 90)
+                    RandomTree();
+                else if(mode <= 105)
+                    InCompleteKBTree();
+                else
+                    TreeOverTree();
+            }
+            void Daisy(){
+                int center = 1;
+                for(int i=2;i<=vertexCount;++i){
+                    if(weightedTreeSwitch)
+                        add_edge(center, i, rnd.irand(vmin,vmax));
+                    else
+                        add_edge(center, i);
                 }
             }
-            inline void swap(int &x,int &y){
-                int buf = x;
-                x = y;
-                y = buf;
+            void Chain(){
+                for(int i=1;i<vertexCount;++i){
+                    if(weightedTreeSwitch)
+                        add_edge(i,i+1,rnd.irand(vmin,vmax));
+                    else
+                        add_edge(i,i+1);
+                }
             }
+            void ChainWithDaisy(){
+            }
+            void ChainWithChain(){
+            }
+            void DaisyWithDaisy(){
+            }
+            void RandomTree(){
+            }
+            void CompleteKBTree(){
+            }
+            void InCompleteKBTree(){
+            }
+            void TreeOverTree(){
+            }
+            
         private:
+            bool weightedTreeSwitch;
+            int vertexCount;
+            int tot = 0;
+            int vmin, vmax;
             Random rnd;
-            int *ver;
-            int n;
     };
 }
 
