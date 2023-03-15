@@ -115,17 +115,17 @@ namespace Generator
             {
                 Random rnd;
                 for(int i = 1; i <= vertexCount; ++i) {
-                    int oth = rnd.irand(1,vertexCount);
-                    std::swap(id[i],id[oth]);
+                    int oth = rnd.irand(1, vertexCount);
+                    std::swap(id[i], id[oth]);
                 }
             }
             inline void __add_edge(int from, int to, int weight)
             {
-                edgeContainer.push_back((EDGE){from,to,weight});
+                edgeContainer.push_back( (EDGE){from, to, weight} );
             }
             inline void __add_edge(int from, int to)
             {
-                edgeContainer.push_back((EDGE){from,to,1});
+                edgeContainer.push_back( (EDGE){from, to, 1} );
             }
             /**
              * @brief 重边检查器
@@ -145,11 +145,16 @@ namespace Generator
                 hashtable[{from, to}] = true;
                 return true;
             }
+            /**
+             * @brief 自环检查器
+             * @return true 则为检查通过，false 则为检查失败
+             * @note 若检查失败，则会输出日志
+            */
             inline bool loopChecker(int from, int to)
             {
                 if(!loopCheckSwitch)
                     return true;
-                if(from == to){
+                if(from == to) {
                     fprintf(stderr, "Edge <%d,%d> was unable to pass loop check. Ignored.\n", from, to);
                     return false;
                 }
@@ -162,31 +167,24 @@ namespace Generator
             bool weightedMapSwitch;
             int vertexCount;
             int *id;
-            struct EDGE{
+            struct EDGE {
                 int from, to, weight;
             };
             vector<EDGE> edgeContainer;
             map<pii,bool> hashtable;
     };
     /**
-     * else if(mode <= 40)
-                    DaisyWithDaisy();
-                else if(mode <= 60)
-                    ChainWithDaisy();
-                else if(mode <= 75)
-                    CompleteKBTree();
-                else if(mode <= 90)
-                    RandomTree();
+     * @brief 无根树生成方式
     */
     enum NRT_GEN_CONF{
-        METHOD_DAISY=5,
-        METHOD_CHAIN=10,
-        METHOD_CHAIN_WITH_CHAIN=25,
-        METHOD_DAISY_WITH_DAISY=40,
-        METHOD_CHAIN_WITH_DAISY=60,
-        METHOD_COMP_KB_TREE=75,
-        METHOD_RND_TREE=90,
-        METHOD_TREE_OVER_TREE=100
+        METHOD_DAISY=5, //生成一朵菊花
+        METHOD_CHAIN=10, //生成一条链
+        METHOD_CHAIN_WITH_CHAIN=25, //生成链套链
+        METHOD_DAISY_WITH_DAISY=40, //生成菊花套菊花
+        METHOD_CHAIN_WITH_DAISY=60, //生成链套菊花
+        METHOD_COMP_KB_TREE=75, //生成完全K叉树
+        METHOD_RND_TREE=90, //生成随机树
+        METHOD_TREE_OVER_TREE=100 //生成随机树套随机树
     };
     /**
      * @brief 生成一颗无根树
@@ -222,26 +220,35 @@ namespace Generator
                 clear();
             }
             /**
-             * @brief 启用生成
+             * @brief 启用随机种类生成
             */
             void Generate()
             {
                 clear();
-                int mode = rnd.irand(1,100);
+                int mode = rnd.irand(1, 100);
                 _Generate(mode);
             }
-            void SpecificGenerate(NRT_GEN_CONF tgc){
+            /**
+             * @brief 启用特定种类生成
+            */
+            void SpecificGenerate(NRT_GEN_CONF tgc)
+            {
                 clear();
                 _Generate(tgc);
             }
             /**
              * @brief 输出生成结果
             */
-            void output(bool shuffleOutput = true){
+            void output(bool shuffleOutput = true)
+            {
                 this->_output(shuffleOutput);
             }
         protected:
-            void _Generate(int mode){
+            /**
+             * @brief 生成方式选择子
+            */
+            void _Generate(int mode)
+            {
                 if(mode<=5)
                     Daisy();
                 else if(mode <= 10)
@@ -259,7 +266,7 @@ namespace Generator
                 else
                     TreeOverTree();
             }
-            void Daisy(int center = 1, unsigned size = 0,int labelbegin = 1)
+            void Daisy(int center = 1, unsigned size = 0, int labelbegin = 1)
             {
                 if(!size)
                     size = vertexCount;
@@ -270,11 +277,11 @@ namespace Generator
                         add_edge(center, i);
                 }
             }
-            void Chain(int begin = 1,unsigned length = 0,int labelbegin = 1)
+            void Chain(int begin = 1, unsigned length = 0, int labelbegin = 1)
             {
                 if(!length)
                     length = vertexCount;
-                add_edge(begin,labelbegin);
+                add_edge(begin, labelbegin);
                 for(int i = labelbegin; i < labelbegin + int(length) - 1; ++i) {
                     if(weightedTreeSwitch)
                         add_edge(i, i+1, rnd.irand(vmin, vmax));
@@ -287,75 +294,79 @@ namespace Generator
                 asserti(chainProbabilty + DaisyProbabilty == 1, "PANIC!!! Probabilty sum was equal to 1.");
                 int bsize = sqrt(vertexCount);
                 int i = 1;
-                for(i = 2; i+bsize-1 <= vertexCount; i += bsize){
-                    double mode = rnd.frand(0,1);
-                    int p = rnd.irand(1,i-1);
-                    if(mode<=chainProbabilty)
-                        Chain(p,bsize,i);
-                    else
-                        Daisy(p,bsize,i);
-                }
-                if(i-1<vertexCount){
+                for(i = 2; i+bsize-1 <= vertexCount; i += bsize) {
                     double mode = rnd.frand(0, 1);
-                    int p = rnd.irand(1,i-1);
+                    int p = rnd.irand(1, i-1);
+                    if(mode <= chainProbabilty)
+                        Chain(p, bsize, i);
+                    else
+                        Daisy(p, bsize, i);
+                }
+                if(i-1 < vertexCount) {
+                    double mode = rnd.frand(0, 1);
+                    int p = rnd.irand(1, i-1);
                     if(mode <= chainProbabilty)
                         Chain(p, vertexCount-i+1, i);
                     else
                         Daisy(p, vertexCount-i+1, i);
                 }
             }
-            void ChainWithChain(){
+            void ChainWithChain()
+            {
                 int bsize = sqrt(vertexCount);
                 int i = 1;
-                for(i = 2; i+bsize-1 <= vertexCount; i += bsize){
-                    int p = rnd.irand(1,i-1);
-                    Chain(p,bsize,i);
+                for(i = 2; i+bsize-1 <= vertexCount; i += bsize) {
+                    int p = rnd.irand(1, i-1);
+                    Chain(p, bsize, i);
                 }
                 
-                if(i-1<vertexCount){
-                    int p = rnd.irand(1,i-1);
+                if(i-1 < vertexCount) {
+                    int p = rnd.irand(1, i-1);
                     Chain(p, vertexCount-i+1, i);
                 }
             }
-            void DaisyWithDaisy(){
+            void DaisyWithDaisy()
+            {
                 int bsize = sqrt(vertexCount);
                 int i = 0;
-                for(i = 2; i+bsize-1 <= vertexCount; i += bsize){
-                    int p = rnd.irand(1,i-1);
-                    Daisy(p,bsize,i);
+                for(i = 2; i+bsize-1 <= vertexCount; i += bsize) {
+                    int p = rnd.irand(1, i-1);
+                    Daisy(p, bsize, i);
                 }
-                if(i-1<vertexCount){
-                    int p = rnd.irand(1,i-1);
+                if(i-1 < vertexCount) {
+                    int p = rnd.irand(1, i-1);
                     Daisy(p, vertexCount-i+1, i);
                 }
             }
-            void RandomTree(int beginlabel = 1, int endlabel = 0){
+            void RandomTree(int beginlabel = 1, int endlabel = 0)
+            {
                 if(!endlabel)
                     endlabel = vertexCount;
-                for(int i=beginlabel+1;i<=endlabel;i++){
-                    int from = rnd.irand(beginlabel,i-1);
+                for(int i = beginlabel+1; i <= endlabel; i++) {
+                    int from = rnd.irand(beginlabel, i-1);
                     if(weightedTreeSwitch)
                         add_edge(from, i, rnd.irand(vmin, vmax));
                     else
                         add_edge(from, i);
                 }
             }
-            void CompleteKBTree(){
-                int k = rnd.irand(2,5);
-                for(int i=2; i<=vertexCount; ++i) {
+            void CompleteKBTree()
+            {
+                int k = rnd.irand(2, 5);
+                for(int i = 2; i <= vertexCount; ++i) {
                     if(weightedTreeSwitch)
                         add_edge(i, ((k - 2) + i) / k, rnd.irand(vmin, vmax));
                     else
                         add_edge(i, ((k - 2) + i) / k);
                 }
             }
-            void TreeOverTree(){
+            void TreeOverTree()
+            {
                 int bsize = sqrt(vertexCount);
                 int i = 0;
-                for(i=1;i+bsize<=vertexCount;i+=bsize){
-                    RandomTree(i,i+bsize);
-                }
-                if(i<vertexCount)
+                for(i = 1; i+bsize <= vertexCount; i += bsize)
+                    RandomTree(i, i+bsize);
+                if(i < vertexCount)
                     RandomTree(i);
             }
         private:
