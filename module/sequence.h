@@ -1,3 +1,13 @@
+/**
+ * @file sequence.h
+ * @author Larry Green (larry0716@163.com)
+ * @brief 这是 NaDGenLib 关于序列部分的头文件
+ * @details 事实上，这并不是非常好的代码，我很抱歉
+ * @version 0.0.1
+ * @date 2023-03-15
+ * @note 感谢洛谷团队的 CYaRon 项目带给我的启发
+ * @copyright Copyright (c) 2023
+ */
 #ifndef LARRY76_NADGENLIB_MODULE_SEQUENCE_HEADER
 #define LARRY76_NADGENLIB_MODULE_SEQUENCE_HEADER
 
@@ -12,7 +22,7 @@ namespace Generator
     extern std::ofstream *rout;
 
     enum SEQ_GEN_METHOD{
-        METHOD_INTEGER,// 生成整数序列
+        METHOD_INTEGER = 1,// 生成整数序列
         METHOD_FLOAT,// 生成浮点数序列
         METHOD_CUSTOM//生成自定义序列
     };
