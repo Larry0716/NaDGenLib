@@ -289,15 +289,15 @@ namespace Generator
                         add_edge(i, i+1);
                 }
             }
-            void ChainWithDaisy(double chainProbabilty=0.5, double DaisyProbabilty=0.5)
+            void ChainWithDaisy(double chainProbability=0.5, double DaisyProbability=0.5)
             {
-                asserti(chainProbabilty + DaisyProbabilty == 1, "PANIC!!! Probabilty sum was equal to 1.");
+                asserti(chainProbability + DaisyProbability == 1, "PANIC!!! Probability sum wasn't equal to 1.");
                 int bsize = sqrt(vertexCount);
                 int i = 1;
                 for(i = 2; i+bsize-1 <= vertexCount; i += bsize) {
                     double mode = rnd.frand(0, 1);
                     int p = rnd.irand(1, i-1);
-                    if(mode <= chainProbabilty)
+                    if(mode <= chainProbability)
                         Chain(p, bsize, i);
                     else
                         Daisy(p, bsize, i);
@@ -305,7 +305,7 @@ namespace Generator
                 if(i-1 < vertexCount) {
                     double mode = rnd.frand(0, 1);
                     int p = rnd.irand(1, i-1);
-                    if(mode <= chainProbabilty)
+                    if(mode <= chainProbability)
                         Chain(p, vertexCount-i+1, i);
                     else
                         Daisy(p, vertexCount-i+1, i);
