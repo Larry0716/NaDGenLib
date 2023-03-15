@@ -17,52 +17,53 @@
 #include "module/genlib.h"
 #include "module/random.h"
 #include "module/sequence.h"
+#include "module/graph.h"
 
 namespace Generator{
-    /**
-     * @brief 生成一颗无根树
-    */
-    class NoRootTree{
-        public:
-            NoRootTree(int n){
-                ver = new int[n+1];
-                this->n = n;
-                for(int i=1;i<=n;i++)
-                    ver[i] = i;
-            }
-            void Output(){
-                shuffle();
-                std::ofstream &fout = *(rout);
-                for(int i=2;i<n;i++){
-                    int fa = rnd.irand(1,i-1);
-                    fout<<ver[i]<<' '<<ver[fa]<<'\n';
-                }
-            }
-            void Output(int wmin,int wmax){
-                shuffle();
-                std::ofstream &fout = *(rout);
-                for(int i=2;i<n-1;i++){
-                    int fa = rnd.irand(1,i-1);
-                    fout<<ver[i]<<' '<<ver[fa]<<' '<<rnd.irand(wmin,wmax)<<'\n';
-                }
-            }
-        protected:
-            void shuffle(){
-                for(int i=1;i<=n;i++){
-                    int oth = rnd.irand(1,n);
-                    swap(ver[i],ver[oth]);
-                }
-            }
-            inline void swap(int &x,int &y){
-                int buf = x;
-                x = y;
-                y = buf;
-            }
-        private:
-            Random rnd;
-            int *ver;
-            int n;
-    };
+    // /**
+    //  * @brief 生成一颗无根树
+    // */
+    // class NoRootTree{
+    //     public:
+    //         NoRootTree(int n){
+    //             ver = new int[n+1];
+    //             this->n = n;
+    //             for(int i=1;i<=n;i++)
+    //                 ver[i] = i;
+    //         }
+    //         void Output(){
+    //             shuffle();
+    //             std::ofstream &fout = *(rout);
+    //             for(int i=2;i<n;i++){
+    //                 int fa = rnd.irand(1,i-1);
+    //                 fout<<ver[i]<<' '<<ver[fa]<<'\n';
+    //             }
+    //         }
+    //         void Output(int wmin,int wmax){
+    //             shuffle();
+    //             std::ofstream &fout = *(rout);
+    //             for(int i=2;i<n-1;i++){
+    //                 int fa = rnd.irand(1,i-1);
+    //                 fout<<ver[i]<<' '<<ver[fa]<<' '<<rnd.irand(wmin,wmax)<<'\n';
+    //             }
+    //         }
+    //     protected:
+    //         void shuffle(){
+    //             for(int i=1;i<=n;i++){
+    //                 int oth = rnd.irand(1,n);
+    //                 swap(ver[i],ver[oth]);
+    //             }
+    //         }
+    //         inline void swap(int &x,int &y){
+    //             int buf = x;
+    //             x = y;
+    //             y = buf;
+    //         }
+    //     private:
+    //         Random rnd;
+    //         int *ver;
+    //         int n;
+    // };
 
     class DaisyMap{
         public:
