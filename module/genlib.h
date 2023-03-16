@@ -40,11 +40,11 @@ namespace Generator
                                   const char *reason )
     {
         fprintf(stderr, "Assertion Failed!!\n");
-        fprintf(stderr, "-> File: %s\n",file);
-        fprintf(stderr, "-> Base File: %s\n",base_file);
-        fprintf(stderr, "-> Line: %d\n",line);
-        fprintf(stderr, "-> Expression: %s\n",exp);
-        fprintf(stderr, "-> Information: %s\n",reason);
+        fprintf(stderr, "-> File: %s\n", file);
+        fprintf(stderr, "-> Base File: %s\n", base_file);
+        fprintf(stderr, "-> Line: %d\n", line);
+        fprintf(stderr, "-> Expression: %s\n", exp);
+        fprintf(stderr, "-> Information: %s\n", reason);
         failed_to_execute();
     }
 
@@ -58,7 +58,7 @@ namespace Generator
     static string FormatString(string buffer)
     {
         int i = 0;
-        for(i=buffer.length()-1; i>=0; --i) {
+        for(i = buffer.length()-1; i >= 0; --i) {
             if(buffer[i] == '.')
                 break;
         }
@@ -73,7 +73,7 @@ namespace Generator
     */
     void RedirectToFileFunc(string filename)
     {
-        if(rout!=nullptr)
+        if(rout != nullptr)
             delete rout;
         rout = new std::ofstream(filename);
         asserti(rout->is_open(), "Failed to open input file");

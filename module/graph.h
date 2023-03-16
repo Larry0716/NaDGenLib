@@ -30,8 +30,9 @@ namespace Generator
     using std::endl;
 
     typedef std::pair<int,int> pii;
+
     /**
-     * @brief 图的基类，用于存储图。
+     * @brief 图的基类，用于存储图和实现图中的一些功能。
     */
     class Graph{
     public:
@@ -59,7 +60,8 @@ namespace Generator
         /**
          * @brief Graph 类的析构函数，用于防止 Graph 类引发内存泄漏
         */
-        ~Graph(){
+        ~Graph()
+        {
             delete[] id;
         }
         /**
@@ -78,14 +80,15 @@ namespace Generator
          * @param from 边的起点
          * @param to 边的终点
         */
-        void add_edge(int from, int to)
+        bool add_edge(int from, int to)
         {
             asserti(!weightedMapSwitch, "PANIC!! The operation doesn't match the setting.");
             if(!multiedgeChecker(from, to))
-                return ;
+                return false;
             if(!loopChecker(from, to))
-                return ;
+                return false;
             __add_edge(from, to);
+            return true;
         }
         /**
          * @brief 添加一条带权边
@@ -93,17 +96,18 @@ namespace Generator
          * @param to 边的终点
          * @param weight 边的权
         */
-        void add_edge(int from, int to, int weight)
+        bool add_edge(int from, int to, int weight)
         {
             asserti(weightedMapSwitch, "PANIC!! The operation doesn't match the setting.");
             if(!multiedgeChecker(from, to))
-                return ;
+                return false;
             if(!loopChecker(from, to))
-                return ;
+                return false;
             __add_edge(from, to, weight);
+            return true;
         }
         /**
-         * @brief 输出图
+         * @brief 输出图的接口
          * @param shuffleOutput 是否启用乱序节点输出
         */
         void Output(bool shuffleOutput = true)
@@ -111,7 +115,7 @@ namespace Generator
             _output(shuffleOutput);
         }
         /**
-         * @brief 获取图的边数
+         * @brief 获取图的边数的接口
         */
         inline int GetEdgeCount()
         {
@@ -119,21 +123,35 @@ namespace Generator
         }
     protected:
         int *id;
+        /**
+         * @brief 获取边数的实现
+        */
         inline int _GetEdgeCount()
         {
             return edgeContainer.size();
         }
-        void _output(bool shuffleOutput = true){
+        /**
+         * @brief 输出图的实现
+         * @param shuffleOutput 打乱点序输出，默认为启用（true）
+        */
+        void _output(bool shuffleOutput = true)
+        {
             std::ofstream &cout = *rout;
             if(shuffleOutput)
                 shuffle();
             for(auto c : edgeContainer) {
                 if(weightedMapSwitch)
-                    cout << id[c.from] << ' ' << id[c.to] << ' ' << c.weight << endl;
+                    cout << id[c.from] << ' ' 
+                         << id[c.to] << ' ' 
+                         << c.weight << endl;
                 else
-                    cout << id[c.from] << ' ' << id[c.to] << endl;
+                    cout << id[c.from] << ' ' 
+                         << id[c.to] << endl;
             }
         }
+        /**
+         * @brief 打乱点序
+        */
         void shuffle()
         {
             Random rnd;
@@ -141,11 +159,18 @@ namespace Generator
                 int oth = rnd.irand(1, vertexCount);
                 std::swap(id[i], id[oth]);
             }
+            std::shuffle(edgeContainer.begin(), edgeContainer.end(), std::mt19937_64(time(0)));
         }
+        /**
+         * @brief 加一条带权边的实现
+        */
         inline void __add_edge(int from, int to, int weight)
         {
             edgeContainer.push_back( (EDGE){from, to, weight} );
         }
+        /**
+         * @brief 加一条无权边的实现
+        */
         inline void __add_edge(int from, int to)
         {
             edgeContainer.push_back( (EDGE){from, to, 1} );
@@ -195,6 +220,7 @@ namespace Generator
         vector<EDGE> edgeContainer;
         map<pii,bool> hashtable;
     };
+
     /**
      * @brief 无根树生成方式
     */
@@ -208,6 +234,7 @@ namespace Generator
         METHOD_RND_TREE=90, //生成随机树
         METHOD_TREE_OVER_TREE=100 //生成随机树套随机树
     };
+
     /**
      * @brief 生成一颗无根树
     */
@@ -267,6 +294,18 @@ namespace Generator
         }
     protected:
         /**
+         * @brief 加一条边（自动生成边权）
+         * @param from 边的起点
+         * @param to 边的终点
+        */
+        void add(int from, int to)
+        {
+            if(weightedTreeSwitch)
+                add_edge(from, to, rnd.irand(vmin, vmax));
+            else
+                add_edge(from, to);
+        }
+        /**
          * @brief 生成方式选择子
         */
         void _Generate(int mode)
@@ -288,38 +327,52 @@ namespace Generator
             else
                 TreeOverTree();
         }
+        /**
+         * @brief 生成一朵菊花
+         * @param center 中心节点编号
+         * @param size 菊花大小
+         * @param labelbegin 边缘点的起始编号
+        */
         void Daisy(int center = 1, unsigned size = 0, int labelbegin = 1)
         {
             if(!size)
                 size = vertexCount;
-            for(int i = labelbegin; i < labelbegin+int(size); ++i) {
-                if(weightedTreeSwitch)
-                    add_edge(center, i, rnd.irand(vmin, vmax));
-                else
-                    add_edge(center, i);
-            }
+            for(int i = labelbegin; i < labelbegin+int(size); ++i)
+                add(center, i);
         }
+        /**
+         * @brief 生成一条链
+         * @param begin 链的起始节点
+         * @param length 链的长度
+         * @param labelbegin 链的第二节点编号
+         * @warning 注意，labelbegin 与 begin 没有关系
+        */
         void Chain(int begin = 1, unsigned length = 0, int labelbegin = 1)
         {
             if(!length)
                 length = vertexCount;
-            add_edge(begin, labelbegin);
+            add(begin, labelbegin);
             for(int i = labelbegin; i < labelbegin + int(length) - 1; ++i) {
-                if(weightedTreeSwitch)
-                    add_edge(i, i+1, rnd.irand(vmin, vmax));
-                else
-                    add_edge(i, i+1);
+                add(i, i+1);
             }
         }
-        void ChainWithDaisy(double chainProbability=0.5, double DaisyProbability=0.5)
+        /**
+         * @brief 生成链套菊花
+         * @param ChainProbability 生成链的概率
+         * @param DaisyProbability 生成菊花的概率
+         * @warning 注意，这两者的概率相加必须要等于 1
+         * @warning 注意，链套菊花不等同于菊花链
+        */
+        void ChainWithDaisy( double ChainProbability=0.5, 
+                             double DaisyProbability=0.5 )
         {
-            asserti(chainProbability + DaisyProbability == 1, "PANIC!!! Probability sum wasn't equal to 1.");
+            asserti(ChainProbability + DaisyProbability == 1, "PANIC!!! Probability sum wasn't equal to 1.");
             int bsize = sqrt(vertexCount);
             int i = 1;
             for(i = 2; i+bsize-1 <= vertexCount; i += bsize) {
                 double mode = rnd.frand(0, 1);
                 int p = rnd.irand(1, i-1);
-                if(mode <= chainProbability)
+                if(mode <= ChainProbability)
                     Chain(p, bsize, i);
                 else
                     Daisy(p, bsize, i);
@@ -327,12 +380,15 @@ namespace Generator
             if(i-1 < vertexCount) {
                 double mode = rnd.frand(0, 1);
                 int p = rnd.irand(1, i-1);
-                if(mode <= chainProbability)
+                if(mode <= ChainProbability)
                     Chain(p, vertexCount-i+1, i);
                 else
                     Daisy(p, vertexCount-i+1, i);
             }
         }
+        /**
+         * @brief 生成链套链
+        */
         void ChainWithChain()
         {
             int bsize = sqrt(vertexCount);
@@ -341,12 +397,14 @@ namespace Generator
                 int p = rnd.irand(1, i-1);
                 Chain(p, bsize, i);
             }
-            
             if(i-1 < vertexCount) {
                 int p = rnd.irand(1, i-1);
                 Chain(p, vertexCount-i+1, i);
             }
         }
+        /**
+         * @brief 生成菊花套菊花
+        */
         void DaisyWithDaisy()
         {
             int bsize = sqrt(vertexCount);
@@ -360,18 +418,23 @@ namespace Generator
                 Daisy(p, vertexCount-i+1, i);
             }
         }
+        /**
+         * @brief 生成一颗随机构造树
+         * @param beginlabel 表示起始节点编号
+         * @param endlabel 表示终止节点编号
+        */
         void RandomTree(int beginlabel = 1, int endlabel = 0)
         {
             if(!endlabel)
                 endlabel = vertexCount;
             for(int i = beginlabel+1; i <= endlabel; i++) {
                 int from = rnd.irand(beginlabel, i-1);
-                if(weightedTreeSwitch)
-                    add_edge(from, i, rnd.irand(vmin, vmax));
-                else
-                    add_edge(from, i);
+                add(from, i);
             }
         }
+        /**
+         * @brief 生成一颗完全 K 叉树
+        */
         void CompleteKBTree()
         {
             int k = rnd.irand(2, 5);
@@ -382,6 +445,9 @@ namespace Generator
                     add_edge(i, ((k - 2) + i) / k);
             }
         }
+        /**
+         * @brief 生成随机构造树套随机构造树
+        */
         void TreeOverTree()
         {
             int bsize = sqrt(vertexCount);
@@ -398,6 +464,7 @@ namespace Generator
         int vmin, vmax;
         Random rnd;
     };
+
     /**
      * @brief 生成菊花链
     */
@@ -432,22 +499,29 @@ namespace Generator
         void Generate(){
             clear();
             for(int i = 2; i <= vertexCount ;++i)
-                if(weightedDaisyMapSwitch)
-                    add_edge(central, i, rnd.irand(vmin, vmax));
-                else
-                    add_edge(central, i);
+                add(central, i);
 
             for(int i = vertexCount; i >= 2; --i)
-                if(weightedDaisyMapSwitch)
-                    add_edge(i, i-1, rnd.irand(vmin, vmax));
-                else
-                    add_edge(i, i-1);
+                add(i, i-1);
         }
         /**
          * @brief 输出生成结果
         */
         void Output(bool shuffleOutput = true){
             _output(shuffleOutput);
+        }
+    protected:
+        /**
+         * @brief 加一条边（自动生成边权）
+         * @param from 边的起点
+         * @param to 边的终点
+        */
+        void add(int from, int to)
+        {
+            if(weightedDaisyMapSwitch)
+                add_edge(from, to, rnd.irand(vmin, vmax));
+            else
+                add_edge(from, to);
         }
     private:
         bool weightedDaisyMapSwitch;
@@ -456,6 +530,10 @@ namespace Generator
         int central = 1;
         Random rnd;
     };
+
+    /**
+     * @brief 生成强对抗 SPFA 图（网格图）
+    */
     class AntiSPFA : protected Graph{
     public:
         /**
@@ -494,19 +572,19 @@ namespace Generator
         {
             clear();
             shuffle();
-            for(int i = 0; i < n; ++i){
+            for(int i = 1; i <= n; ++i){
                 for(int j = 1; j < m; ++j){
                     add_edge(getIndex(i, j), getIndex(i, j+1), rnd.irand(vmin, vmax));
                     add_edge(getIndex(i, j+1), getIndex(i, j), rnd.irand(vmin, vmax));
                 }
             }
             for(int i = 1; i <= m; ++i){
-                for(int j = 0; j < n-1; ++j){
+                for(int j = 1; j < n; ++j){
                     add_edge(getIndex(j, i), getIndex(j+1, i), 1);
                     add_edge(getIndex(j+1, i), getIndex(j, i), 1);
                 }
             }
-            for(int i = 0; i < n-1; ++i)
+            for(int i = 1; i < n; ++i)
                 for(int j = 1; j < m; ++j)
                     add_edge(getIndex(i, j), getIndex(i+1, j+1), rnd.irand(vmin, vmax));
         }
@@ -530,14 +608,418 @@ namespace Generator
             _output(false);
         }
     protected:
+        /**
+         * @brief 获取二维网格图节点在一维数组中的实际存储位置\
+         * @param i 第 i 行
+         * @param j 第 j 列
+        */
         inline int getIndex(int i, int j)
         {
-            return i*m+j;
+            return (i-1)*m+j;
         }
     private:
         int n,m;
         int vmin, vmax;
         Random rnd;
+    };
+
+    /**
+     * @brief 生成随机图
+     * @note 允许图不连通，但不允许自环和重边
+    */
+    class RandomGraph : protected Graph{
+    public:
+        /**
+         * @brief 随机无权图的构造函数
+         * @param verCount 随机图点数
+         * @param edgeCount 随机图边数
+         * @param undirectedMap 无向图开关，默认为有向图（false）
+         * @warning 该生成器并非高性能生成器，当边数较大时可能会出现严重的性能下降
+        */
+        RandomGraph(int verCount, int edgeCount, bool undirectedMap = false)
+            :Graph(verCount, undirectedMap, false, true, true), 
+             vertexCount(verCount), edgeCount(edgeCount),
+             weightedMapSwitch(false)
+        { }
+        /**
+         * @brief 随机带权图的构造函数
+         * @param verCount 随机图点数
+         * @param edgeCoucnt 随机图边数
+         * @param vmin 边权最小值
+         * @param vmax 边权最大值
+         * @param undirectedMap 无向图开关，默认为有向图（false）
+         * @warning 该生成器并非高性能生成器，当边数较大时可能会出现严重的性能下降
+        */
+        RandomGraph( int verCount, int edgeCount, int vmin, int vmax, 
+                     bool undirectedMap = false)
+            :Graph(verCount, undirectedMap, true, true, true),
+             vertexCount(verCount), edgeCount(edgeCount),
+             vmin(vmin), vmax(vmax), 
+             weightedMapSwitch(true)
+        { }
+        /**
+         * @brief 启用生成
+        */
+        void Generate()
+        {
+            while(edgeCount){
+                bool u = rnd.irand(1, vertexCount);
+                bool v = rnd.irand(1, vertexCount);
+                edgeCount -= add(u, v);
+            }
+        }
+        /**
+         * @brief 输出生成结果
+         * @param shuffleOutput 打乱节点输出，默认为打乱（true）
+        */
+        void Output(bool shuffleOutput = true)
+        {
+            _output(shuffleOutput);
+        }
+    protected:
+        /**
+         * @brief 加一条边（自动生成边权）
+         * @param from 边的起点
+         * @param to 边的终点
+        */
+        bool add(int from, int to)
+        {
+            if(weightedMapSwitch)
+                return add_edge(from, to, rnd.irand(vmin, vmax));
+            else
+                return add_edge(from, to);
+        }
+    private:
+        Random rnd;
+        int vertexCount;
+        int edgeCount;
+        int vmin, vmax;
+        bool weightedMapSwitch;
+    };
+
+    /**
+     * @brief 生成一张有向无环图。
+    */
+    class DAG : protected Graph{
+    public:
+        /**
+         * @brief 无权有向无环图的构造函数
+         * @param verCount 有向无环图的点数
+         * @param edgeCount 有向无环图的边数
+        */
+        DAG(int verCount, int edgeCount)
+            :Graph(verCount, false, false, true, true), 
+             vertexCount(verCount), edgeCount(edgeCount), 
+             weightedMapSwitch(false)
+        {
+            asserti(edgeCount >= verCount - 1, "Invalid edge count.");
+        }
+        /**
+         * @brief 带权有向无环图的构造函数
+         * @param verCount 有向无环图的点数
+         * @param edgeCount 有向无环图的边数
+         * @param vmin 边权最小值
+         * @param vmax 边权最大值
+        */
+        DAG(int verCount, int edgeCount, int vmin, int vmax)
+            :Graph(verCount, false, true, true, true),
+             vertexCount(verCount), edgeCount(edgeCount), 
+             vmin(vmin), vmax(vmax),
+             weightedMapSwitch(true)
+        {
+            asserti(edgeCount >= verCount - 1, "Invalid edge count.");
+        }
+        /**
+         * @brief 启用生成
+        */
+        void Generate()
+        {
+            for(int i = 2; i <= vertexCount; i++) {
+                int from = rnd.irand(1, i-1);
+                add(from, i);
+            }
+            edgeCount -= vertexCount - 1;
+            if(!edgeCount)
+                return ;
+            for(int i = 1; i <= vertexCount; ++i) {
+                for(int j = i+1; j <= vertexCount; ++j) {
+                    if(!edgeCount)
+                        return;
+                    edgeCount -= add(i, j);
+                }
+            }
+        }
+        /**
+         * @brief 输出生成结果
+         * @param shuffleOutput 打乱节点输出，默认为打乱（true）
+        */
+        void Output(bool shuffleOutput = true)
+        {
+            _output(shuffleOutput);
+        }
+    protected:
+        /**
+         * @brief 加一条边（自动生成边权）
+         * @param from 边的起点
+         * @param to 边的终点
+        */
+        bool add(int from, int to)
+        {
+            if(weightedMapSwitch)
+                return add_edge(from, to, rnd.irand(vmin, vmax));
+            else
+                return add_edge(from, to);
+        }
+    private:
+        int vertexCount;
+        int edgeCount;
+        int vmin, vmax;
+        bool weightedMapSwitch;
+        Random rnd;
+    };
+    /**
+     * @brief 生成一棵仙人掌
+     * @note 因为本人尚菜，所以该生成器只能指定点数了/kk
+     * @warning 请开发组注意，该方法可能会产生 BUG
+    */
+    class Cactus{
+    public:
+        /**
+         * @brief 无权 Cactus 的构造函数
+         * @param verCount 节点数
+        */
+        Cactus(int verCount)
+        {
+            vertexCount = verCount;
+            weightedMapSwitch = false;
+            alloc(verCount);
+            clear();         
+        }
+        /**
+         * @brief 带权 Cactus 的构造函数
+         * @param verCount 节点数
+         * @param vmin 边权最小值
+         * @param vmax 边权最大值
+        */
+        Cactus(int verCount, int vmin, int vmax)
+            :vmin(vmin), vmax(vmax)
+        {   
+            vertexCount = verCount;
+            weightedMapSwitch = true;
+            alloc(verCount+1);
+            clear();
+        }
+        /**
+         * @brief Cactus 的析构函数
+        */
+        ~Cactus(){
+            delete[] head;
+            delete[] ver;
+            delete[] next;
+            delete[] edge;
+            delete[] top;
+            delete[] siz;
+            delete[] fa;
+            delete[] hson;
+            delete[] id;
+        }
+        /**
+         * @brief 清空 Cactus
+        */
+        void clear(){
+            tot = 0;
+            memset(top,-1,sizeof(int)*(vertexCount<<2));
+            memset(next, 0, sizeof(int)*(vertexCount<<2));
+            memset(head, 0, sizeof(int)*vertexCount);
+            memset(ver, 0, sizeof(int)*(vertexCount<<2));
+            memset(edge, 0, sizeof(int)*(vertexCount<<2));
+            memset(siz, 0, sizeof(int)*(vertexCount<<2));
+            memset(fa, 0, sizeof(int)*(vertexCount<<2));
+            memset(hson, 0, sizeof(int)*(vertexCount<<2));
+            for(int i = 1; i <= vertexCount; ++i)
+                id[i] = i;
+        }
+        /**
+         * @brief 启用生成
+        */
+        void Generate(){
+            for(int i = 2; i <= vertexCount; i++) {
+                int from = rnd.irand(1, i-1);
+                add(from, i);
+            }
+            TreeDecomposition();
+            for(int i = 1; i <= vertexCount; ++i){
+                if(top[i] != -1)
+                    add(i, top[i]);
+            }
+        }
+        /**
+         * @brief 输出生成结果
+         * @param shuffleOutput 打乱节点输出，默认为打乱（true）
+        */
+        void Output(bool shuffleOutput = true)
+        {
+            _output(shuffleOutput);
+        }
+    protected:
+        void alloc(int verCount){
+            head = new int[verCount];
+            next = new int[verCount<<2];
+            ver = new int[verCount<<2];
+            edge = new int[verCount<<2];
+            top = new int[verCount<<2];
+            siz = new int[verCount<<2];
+            fa = new int[verCount<<2];
+            hson = new int[verCount<<2];
+            id = new int[verCount];
+        }
+        /**
+         * @brief 树链剖分
+        */
+        void TreeDecomposition()
+        {
+            dfs1(1, 1);
+            dfs2(1, 1);
+        }
+        /**
+         * @brief 树链剖分预处理
+         * @param u 当前节点
+         * @param f 当前节点的父节点
+        */
+        void dfs1(int u, int f)
+        {
+            siz[u] = 1;
+            fa[u] = f;
+            int maxsize = -1;
+            for(int i = head[u]; i; i = next[i]){
+                int v = ver[i];
+                if(v == f)
+                    continue;
+                dfs1(v, u);
+                siz[u] += siz[v];
+                if(maxsize < siz[v]){
+                    hson[u] = v;
+                    maxsize = siz[v];
+                }
+            }
+        }
+        /**
+         * @brief 树链剖分
+         * @param u 当前节点
+         * @param t 链顶
+        */
+        void dfs2(int u, int t)
+        {
+            if(!hson[u]) {
+                top[u] = t;
+                return;
+            }
+            dfs2(hson[u], t);
+            for(int i = head[u]; i; i = next[i]) {
+                int v = ver[i];
+                if(v != hson[u] && v != fa[u])
+                    dfs2(v, v);
+            }
+        }
+        /**
+         * @brief 加一条边（自动生成边权）
+         * @param from 边的起点
+         * @param to 边的终点
+        */
+        void add(int from, int to)
+        {
+            if(weightedMapSwitch)
+                add_edge(from, to, rnd.irand(vmin, vmax));
+            else
+                add_edge(from, to);
+        }
+        /**
+         * @brief 添加一条无向无权边
+         * @param from 边的起点
+         * @param to 边的终点
+        */
+        void add_edge(int from, int to)
+        {
+            _add_edge(from, to);
+            _add_edge(to, from);
+        }
+        /**
+         * @brief 添加一条无向带权边
+         * @param from 边的起点
+         * @param to 边的终点
+         * @param weight 边权
+        */
+        void add_edge(int from, int to, int weight)
+        {
+            _add_edge(from, to, weight);
+            _add_edge(to, from, weight);
+        }
+        /**
+         * @brief 添加一条有向无权边
+         * @param from 边的起点
+         * @param to 边的终点
+        */
+        void _add_edge(int from, int to)
+        {
+            ver[++tot] = to;
+            next[tot] = head[from];
+            head[from] = tot;
+        }
+        /**
+         * @brief 添加一条有向带权边
+         * @param from 边的起点
+         * @param to 边的终点
+         * @param weight 边权
+        */
+        void _add_edge(int from, int to, int weight)
+        {
+            ver[++tot] = to;
+            edge[tot] = weight;
+            next[tot] = head[from];
+            head[from] = tot;
+        }
+        /**
+         * @brief 打乱节点编号
+        */
+        void shuffle()
+        {
+            Random rnd;
+            for(int i = 1; i <= vertexCount; ++i) {
+                int oth = rnd.irand(1, vertexCount);
+                std::swap(id[i], id[oth]);
+            }
+        }
+        /**
+         * @brief 输出图的实现
+        */
+        void _output(bool shuffleOutput = true)
+        {
+            std::ofstream &cout = *rout;
+            if(shuffleOutput)
+                shuffle();
+            for(int i = 1; i <= vertexCount; ++i) {
+                for(int j = head[i]; j; j = next[j]) {
+                    int v = ver[j];
+                    if(hashtable[{ std::min(i, v), std::max(i, v) }])
+                        continue;
+                    cout << id[v] << ' ' << id[i];
+                    if(weightedMapSwitch)
+                        cout << ' ' << edge[i];
+                    cout << std::endl;
+                    hashtable[{ std::min(i, v), std::max(i, v) }] = true;
+                }
+            }
+        }
+    private:
+        bool weightedMapSwitch;
+        int vertexCount;
+        int *head, *next, *ver, *edge;
+        int *siz, *hson, *top, *fa;
+        int *id;
+        int vmin, vmax;
+        int tot = 0;
+        Random rnd;
+        map<pii,bool> hashtable;
     };
 }
 
