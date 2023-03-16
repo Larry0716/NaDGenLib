@@ -40,11 +40,11 @@ namespace Generator
                                   const char *reason )
     {
         fprintf(stderr, "Assertion Failed!!\n");
-        fprintf(stderr, "-> File: %s\n",file);
-        fprintf(stderr, "-> Base File: %s\n",base_file);
-        fprintf(stderr, "-> Line: %d\n",line);
-        fprintf(stderr, "-> Expression: %s\n",exp);
-        fprintf(stderr, "-> Information: %s\n",reason);
+        fprintf(stderr, "-> File: %s\n", file);
+        fprintf(stderr, "-> Base File: %s\n", base_file);
+        fprintf(stderr, "-> Line: %d\n", line);
+        fprintf(stderr, "-> Expression: %s\n", exp);
+        fprintf(stderr, "-> Information: %s\n", reason);
         failed_to_execute();
     }
 
@@ -58,7 +58,7 @@ namespace Generator
     static string FormatString(string buffer)
     {
         int i = 0;
-        for(i=buffer.length()-1; i>=0; --i) {
+        for(i = buffer.length()-1; i >= 0; --i) {
             if(buffer[i] == '.')
                 break;
         }
@@ -71,14 +71,17 @@ namespace Generator
      * @warning 注意，使用该头文件时，请不要使用 freopen 等重定向。
      * @param filename 用于表示输入文件名。
     */
-    void RedirectToFile(string filename)
+    void RedirectToFileFunc(string filename)
     {
-        if(rout!=nullptr)
+        if(rout != nullptr)
             delete rout;
         rout = new std::ofstream(filename);
         asserti(rout->is_open(), "Failed to open input file");
         nowFilename = filename;
     }
+
+    #define RedirectToFile(filename) RedirectToFileFunc(filename);\
+        std::ofstream &cout = *rout;
 
     /**
      * @brief 用于注册标算程序
@@ -117,13 +120,14 @@ namespace Generator
      * @param startLabel 表示起始标号。
      * @param endLabel 表示结束标号。
      * @param custom 用于传递用户自定义的生成方案函数。
+     * @param enableStd 用于决定是否启用标算程序来用于生成答案，默认为不启用（false）。
      * @warning 请注意，文件名的格式应当包含且只包含一个 %d。
      * @warning 请注意，文件名不会自动补全后缀
      * @warning 请注意，答案文件文件名会有强制后缀.ans
     */
     void AutoGenerate( string format,
-                       int startLabel, int endLabel, bool enableStd, 
-                       void (*custom)() )
+                       int startLabel, int endLabel, void (*custom)(),
+                       bool enableStd = false )
     {
         char buffer[1024];
         char stdbuffer[1024];
@@ -137,7 +141,7 @@ namespace Generator
         time_t agcs = clock();
         for(int i=startLabel; i<=endLabel; i++) {
             sprintf(buffer, format.c_str(), i);
-            RedirectToFile(string(buffer));
+            RedirectToFileFunc(string(buffer));
             (*custom)();
             rout->close();
             if(enableStd) {
@@ -155,15 +159,15 @@ namespace Generator
      * @param format 输入文件的文件名格式。
      * @param startLabel 表示起始标号。
      * @param endLabel 表示结束标号。
-     * @param enableStd 用于决定是否启用标算程序来用于生成答案。
      * @param custom 用于传递用户自定义的生成方案函数。
+     * @param enableStd 用于决定是否启用标算程序来用于生成答案，默认为不启用（false）。
      * @warning 请注意，文件名的格式应当包含且只包含一个 %d。
      * @warning 请注意，文件名不会自动补全后缀
      * @warning 请注意，答案文件文件名会有强制后缀.ans
     */
     void AutoGenerate( string format, 
-                       int startLabel, int endLabel, bool enableStd, 
-                       void (*custom)(int nowLabel) )
+                       int startLabel, int endLabel, void (*custom)(int nowLabel),
+                       bool enableStd = false )
     {
         char buffer[1024];
         char stdbuffer[1024];
@@ -177,7 +181,7 @@ namespace Generator
         time_t agcs = clock();
         for(int i=startLabel; i<=endLabel; i++){
             sprintf(buffer, format.c_str(), i);
-            RedirectToFile(string(buffer));
+            RedirectToFileFunc(string(buffer));
             (*custom)(i);
             rout->close();
             if(enableStd){

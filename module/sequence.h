@@ -30,7 +30,7 @@ namespace Generator
     /**
      * @brief 用于 Sequence 类的配置
     */
-    template <typename T>
+    template <typename T = int>
     struct SEQ_GEN_CONF{
         SEQ_GEN_CONF(){}
         /**
@@ -60,13 +60,13 @@ namespace Generator
          * @param length 生成序列长度
          * @param vmin 生成序列的最小值
          * @param vmax 生成序列的最大值
-         * @param eps 生成序列的数据精度，默认为 3
+         * @param eps 生成序列的数据精度
          * @param split 生成序列的分割方式，默认为空格
          * @param ends 生成序列的结束方式，默认为回车
          * @overload
         */
         SEQ_GEN_CONF( SEQ_GEN_METHOD method,
-                      unsigned long long length, T vmin, T vmax, unsigned eps = 3,
+                      unsigned long long length, T vmin, T vmax, unsigned eps,
                       string split = " ", string ends = "\n" )
         {
             asserti(method != METHOD_CUSTOM, "Unmatched method");
@@ -86,7 +86,6 @@ namespace Generator
          * @param split 生成序列的分割方式，默认为空格
          * @param ends 生成序列的结束方式，默认为回车
          * @warning 如果生成函数也需要精度控制，请执行修改 eps。
-         * @overload
         */
         SEQ_GEN_CONF( SEQ_GEN_METHOD method,
                       unsigned long long length, T (*customFunction)(int n),
@@ -113,21 +112,18 @@ namespace Generator
      * @brief 生成序列
      * @warning 注意，默认生成整数序列
     */
-    template <typename T>
+    template <typename T=int>
     class Sequence{
     public:
         /**
-         * @brief Sequence 的空构造函数。
+         * @brief Sequence 的默认构造函数。
         */
         Sequence(){}
         /**
-         * @brief Sequence 的拷贝构造。
-        */
-        // Sequence(const Sequence &oth){}
-        /**
          * @brief Sequence 的标准构造。
         */
-        Sequence(SEQ_GEN_CONF<T> config){
+        Sequence(SEQ_GEN_CONF<T> config)
+        {
             SetConfig(config);
         }
         /**
@@ -169,28 +165,37 @@ namespace Generator
             }
         }
     protected:
+        /**
+         * @brief 生成整数序列
+        */
         void IntegerGen()
         {
         	std::ofstream &cout = *rout;
-            for(register int i = 1; i < genConfig.length; ++i) {
+            for(register int i = 1; i < int(genConfig.length); ++i) {
                 cout << rnd.irand(genConfig.vmin, genConfig.vmax) << genConfig.split;
             }
             cout << rnd.irand(genConfig.vmin, genConfig.vmax) << genConfig.ends;
         }
+        /**
+         * @brief 生成浮点数序列
+        */
         void FloatGen()
         {
         	std::ofstream &cout = *rout;
-            for(register int i = 1; i < genConfig.length; ++i) {
+            for(register int i = 1; i < int(genConfig.length); ++i) {
                 cout << std::fixed << std::setprecision(genConfig.eps) 
                      << rnd.frand(genConfig.vmin, genConfig.vmax) 
                      << genConfig.split;
             }
             cout << rnd.frand(genConfig.vmin, genConfig.vmax) << genConfig.ends;
         }
+        /**
+         * @brief 生成自定义序列
+        */
         void CustomGen()
         {
         	std::ofstream &cout = *rout;
-            for(register int i = 1; i < genConfig.length; ++i) {
+            for(register int i = 1; i < int(genConfig.length); ++i) {
                 cout << genConfig.customFunction(i) << genConfig.split;
             }
             cout << genConfig.customFunction(genConfig.length) << genConfig.ends;
@@ -200,6 +205,58 @@ namespace Generator
         bool isCustomGenerate;
         SEQ_GEN_CONF<T> genConfig;
         Random rnd;
+    };
+
+    /**
+     * @brief 生成排列
+    */
+    class Permutation{
+    public:
+        /**
+         * @brief 排列的构造函数
+        */
+        Permutation(int length)
+        {
+            id = new int[length+1];
+            for(int i = 0; i <= length; i++)
+                id[i] = i;
+            shuffle();
+        }
+        /**
+         * @brief 输出生成结果
+         * @param split 分割方式，默认为空格
+         * @param ends 结束方式，默认为换行
+         * @warning 注意，split 和 ends 都应当为字符串
+        */
+        void Output(string split = " ", string ends = "\n")
+        {
+            std::ofstream &cout = *rout;
+            for(int i = 1; i <= length; ++i)
+                cout << id[i] << split;
+            cout << ends;
+        }
+        /**
+         * @brief 排列的析构函数。
+        */
+        ~Permutation()
+        {
+            delete[] id;
+        }
+    protected:
+        /**
+         * @brief 打乱排列
+        */
+        void shuffle()
+        {
+            for(int i = 1; i <= length; ++i) {
+                int oth = rnd.irand(1, length);
+                std::swap(id[i], id[oth]);
+            }
+        }
+    private:
+        Random rnd;
+        int *id;
+        int length;
     };
 }
 
