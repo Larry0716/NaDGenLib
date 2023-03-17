@@ -526,7 +526,7 @@ namespace Generator
         /**
          * @brief 输出生成结果
         */
-        void Output(bool shuffleOutput = true){
+        inline void Output(bool shuffleOutput = true){
             _output(shuffleOutput);
         }
     protected:
@@ -535,7 +535,7 @@ namespace Generator
          * @param from 边的起点
          * @param to 边的终点
         */
-        void add(int from, int to)
+        inline void add(int from, int to)
         {
             if(weightedDaisyMapSwitch)
                 add_edge(from, to, rnd.irand(vmin, vmax));
@@ -615,14 +615,14 @@ namespace Generator
         inline void AutoMode(int vmin, int vmax)
         {
             std::ofstream &cout = *rout;
-            cout << n*m << ' ' << GetEdgeCount() << ' ' << GetStart() << endl;
             Generate(vmin, vmax);
+            cout << n*m << ' ' << GetEdgeCount() << ' ' << GetStart() << endl;
             Output();
         }
         /**
          * @brief 输出生成结果
         */
-        void Output()
+        inline void Output()
         {
             _output(false);
         }
@@ -691,7 +691,7 @@ namespace Generator
          * @brief 输出生成结果
          * @param shuffleOutput 打乱节点输出，默认为打乱（true）
         */
-        void Output(bool shuffleOutput = true)
+        inline void Output(bool shuffleOutput = true)
         {
             _output(shuffleOutput);
         }
@@ -701,7 +701,7 @@ namespace Generator
          * @param from 边的起点
          * @param to 边的终点
         */
-        bool add(int from, int to)
+        inline bool add(int from, int to)
         {
             if(weightedMapSwitch)
                 return add_edge(from, to, rnd.irand(vmin, vmax));
@@ -772,7 +772,7 @@ namespace Generator
          * @brief 输出生成结果
          * @param shuffleOutput 打乱节点输出，默认为打乱（true）
         */
-        void Output(bool shuffleOutput = true)
+        inline void Output(bool shuffleOutput = true)
         {
             _output(shuffleOutput);
         }
@@ -1024,10 +1024,11 @@ namespace Generator
                     cout << id[v] << ' ' << id[i];
                     if(weightedMapSwitch)
                         cout << ' ' << edge[i];
-                    cout << std::endl;
+                    cout << '\n';
                     hashtable[{ std::min(i, v), std::max(i, v) }] = true;
                 }
             }
+            cout<<flush;
         }
     private:
         bool weightedMapSwitch;
