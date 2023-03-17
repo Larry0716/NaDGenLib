@@ -65,7 +65,7 @@ namespace Generator
          * @param charset 字符集，默认是数字加字母大小写
         */
         string srand( unsigned long long length, 
-                        string charset="0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZMXNCBV" )
+                      string charset="0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZMXNCBV" )
         {
             string ans;
             while(length--)

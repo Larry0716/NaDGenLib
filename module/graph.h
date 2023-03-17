@@ -18,6 +18,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <algorithm>
 
 #include "random.h"
 #include "genlib.h"
@@ -29,6 +30,7 @@ namespace Generator
     using std::string;
 
     using std::endl;
+    using std::flush;
 
     typedef std::pair<int,int> pii;
 
@@ -81,7 +83,7 @@ namespace Generator
          * @param from 边的起点
          * @param to 边的终点
         */
-        bool add_edge(int from, int to)
+        inline bool add_edge(int from, int to)
         {
             asserti(!weightedMapSwitch, "PANIC!! The operation doesn't match the setting.");
             if(!multiedgeChecker(from, to))
@@ -97,7 +99,7 @@ namespace Generator
          * @param to 边的终点
          * @param weight 边的权
         */
-        bool add_edge(int from, int to, int weight)
+        inline bool add_edge(int from, int to, int weight)
         {
             asserti(weightedMapSwitch, "PANIC!! The operation doesn't match the setting.");
             if(!multiedgeChecker(from, to))
@@ -111,7 +113,7 @@ namespace Generator
          * @brief 输出图的接口
          * @param shuffleOutput 是否启用乱序节点输出
         */
-        void Output(bool shuffleOutput = true)
+        inline void Output(bool shuffleOutput = true)
         {
             _output(shuffleOutput);
         }
@@ -144,11 +146,12 @@ namespace Generator
                 if(weightedMapSwitch)
                     cout << id[c.from] << ' ' 
                          << id[c.to] << ' ' 
-                         << c.weight << endl;
+                         << c.weight << "\n";
                 else
                     cout << id[c.from] << ' ' 
-                         << id[c.to] << endl;
+                         << id[c.to] << "\n";
             }
+            cout<<flush;
         }
         /**
          * @brief 打乱点序
@@ -209,6 +212,14 @@ namespace Generator
             }
             return true;
         }
+        /**
+         * @brief 立即为 vector 分配内存
+         * @param size 分配的大小
+        */
+        inline void alloc(size_t size)
+        {
+            edgeContainer.resize(size);
+        }
     private:
         bool loopCheckSwitch;
         bool muiltiedgeCheckSwitch;
@@ -249,12 +260,13 @@ namespace Generator
          * @warning 注意，该构造函数与其另一个重载有本质不同
         */
         NoRootTree(int verCount, int vmin, int vmax)
-            :Graph(verCount, true, true, true, true)
+            :Graph(verCount, true, true, false, true)
         {
             vertexCount = verCount;
             weightedTreeSwitch = true;
             this->vmin = vmin;
             this->vmax = vmax;
+            alloc(verCount);
             clear();
         }
         /**
@@ -263,16 +275,17 @@ namespace Generator
          * @warning 注意，该构造函数与其另一个重载有本质不同
         */
         NoRootTree(int verCount)
-            :Graph(verCount, true, false, true, true)
+            :Graph(verCount, true, false, false, true)
         {
             vertexCount = verCount;
             weightedTreeSwitch = false;
+            alloc(verCount);
             clear();
         }
         /**
          * @brief 启用随机种类生成
         */
-        void Generate()
+        inline void Generate()
         {
             clear();
             int mode = rnd.irand(1, 100);
@@ -281,7 +294,7 @@ namespace Generator
         /**
          * @brief 启用特定种类生成
         */
-        void SpecificGenerate(NRT_GEN_CONF tgc)
+        inline void SpecificGenerate(NRT_GEN_CONF tgc)
         {
             clear();
             _Generate(tgc);
@@ -289,9 +302,9 @@ namespace Generator
         /**
          * @brief 输出生成结果
         */
-        void Output(bool shuffleOutput = true)
+        inline void Output(bool shuffleOutput = true)
         {
-            this->_output(shuffleOutput);
+            _output(shuffleOutput);
         }
     protected:
         /**
@@ -299,7 +312,7 @@ namespace Generator
          * @param from 边的起点
          * @param to 边的终点
         */
-        void add(int from, int to)
+        inline void add(int from, int to)
         {
             if(weightedTreeSwitch)
                 add_edge(from, to, rnd.irand(vmin, vmax));
@@ -309,7 +322,7 @@ namespace Generator
         /**
          * @brief 生成方式选择子
         */
-        void _Generate(int mode)
+        inline void _Generate(int mode)
         {
             if(mode<=5)
                 Daisy();
@@ -334,7 +347,7 @@ namespace Generator
          * @param size 菊花大小
          * @param labelbegin 边缘点的起始编号
         */
-        void Daisy(int center = 1, unsigned size = 0, int labelbegin = 1)
+        void Daisy(int center = 1, unsigned size = 0, int labelbegin = 2)
         {
             if(!size)
                 size = vertexCount;
@@ -348,7 +361,7 @@ namespace Generator
          * @param labelbegin 链的第二节点编号
          * @warning 注意，labelbegin 与 begin 没有关系
         */
-        void Chain(int begin = 1, unsigned length = 0, int labelbegin = 1)
+        void Chain(int begin = 1, unsigned length = 0, int labelbegin = 2)
         {
             if(!length)
                 length = vertexCount;
@@ -369,18 +382,20 @@ namespace Generator
         {
             asserti(ChainProbability + DaisyProbability == 1, "PANIC!!! Probability sum wasn't equal to 1.");
             int bsize = sqrt(vertexCount);
-            int i = 1;
+            int p = 0;
+            double mode = 0;
+            register int i;
             for(i = 2; i+bsize-1 <= vertexCount; i += bsize) {
-                double mode = rnd.frand(0, 1);
-                int p = rnd.irand(1, i-1);
+                mode = rnd.frand(0, 1);
+                p = rnd.irand(1, i-1);
                 if(mode <= ChainProbability)
                     Chain(p, bsize, i);
                 else
                     Daisy(p, bsize, i);
             }
             if(i-1 < vertexCount) {
-                double mode = rnd.frand(0, 1);
-                int p = rnd.irand(1, i-1);
+                mode = rnd.frand(0, 1);
+                p = rnd.irand(1, i-1);
                 if(mode <= ChainProbability)
                     Chain(p, vertexCount-i+1, i);
                 else
@@ -393,13 +408,14 @@ namespace Generator
         void ChainWithChain()
         {
             int bsize = sqrt(vertexCount);
-            int i = 1;
+            int p = 0;
+            register int i;
             for(i = 2; i+bsize-1 <= vertexCount; i += bsize) {
-                int p = rnd.irand(1, i-1);
+                p = rnd.irand(1, i-1);
                 Chain(p, bsize, i);
             }
             if(i-1 < vertexCount) {
-                int p = rnd.irand(1, i-1);
+                p = rnd.irand(1, i-1);
                 Chain(p, vertexCount-i+1, i);
             }
         }
@@ -409,13 +425,14 @@ namespace Generator
         void DaisyWithDaisy()
         {
             int bsize = sqrt(vertexCount);
-            int i = 0;
+            int p = 0;
+            register int i;
             for(i = 2; i+bsize-1 <= vertexCount; i += bsize) {
-                int p = rnd.irand(1, i-1);
+                p = rnd.irand(1, i-1);
                 Daisy(p, bsize, i);
             }
             if(i-1 < vertexCount) {
-                int p = rnd.irand(1, i-1);
+                p = rnd.irand(1, i-1);
                 Daisy(p, vertexCount-i+1, i);
             }
         }
@@ -428,8 +445,9 @@ namespace Generator
         {
             if(!endlabel)
                 endlabel = vertexCount;
-            for(int i = beginlabel+1; i <= endlabel; i++) {
-                int from = rnd.irand(beginlabel, i-1);
+            int from;
+            for(register int i = beginlabel+1; i <= endlabel; i++) {
+                from = rnd.irand(beginlabel, i-1);
                 add(from, i);
             }
         }
@@ -439,7 +457,7 @@ namespace Generator
         void CompleteKBTree()
         {
             int k = rnd.irand(2, 5);
-            for(int i = 2; i <= vertexCount; ++i) {
+            for(register int i = 2; i <= vertexCount; ++i) {
                 if(weightedTreeSwitch)
                     add_edge(i, ((k - 2) + i) / k, rnd.irand(vmin, vmax));
                 else
@@ -452,7 +470,7 @@ namespace Generator
         void TreeOverTree()
         {
             int bsize = sqrt(vertexCount);
-            int i = 0;
+            register int i;
             for(i = 1; i+bsize <= vertexCount; i += bsize)
                 RandomTree(i, i+bsize);
             if(i < vertexCount)
