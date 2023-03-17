@@ -43,7 +43,7 @@ namespace Generator
          * @param r 生成的最大值
          * @warning 注意，该生成方式不一定均匀
         */
-        long long irand(long long l, long long r)
+        inline long long irand(long long l, long long r)
         {
             asserti(r>=l,"Invalid range");
             return (*rand_int)() % (r-l+1) + l;
@@ -53,7 +53,7 @@ namespace Generator
          * @param l 生成的最小值
          * @param r 生成的最大值
         */
-        long double frand(long double l, long double r)
+        inline long double frand(long double l, long double r)
         {
             asserti(r>=l, "Invalid range");
             static std::uniform_real_distribution<long double> dist(l, r);
