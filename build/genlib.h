@@ -64,10 +64,10 @@ namespace Generator
 	}
 
 	/**
-	 * @brief ç”¨äºå°†è¾“å‡ºé‡å®šå‘
-	 * @warning æ³¨æ„ï¼Œé™¤éä½¿ç”¨å‡½æ•° AutoGenerateï¼Œå¦åˆ™åœ¨ä»»ä½•æƒ…å†µä¸‹ï¼Œè¯·åŠ¡å¿…å…ˆè°ƒç”¨è¯¥å‡½æ•°ã€‚
-	 * @warning æ³¨æ„ï¼Œä½¿ç”¨è¯¥å¤´æ–‡ä»¶æ—¶ï¼Œè¯·ä¸è¦ä½¿ç”¨ freopen ç­‰é‡å®šå‘ã€‚
-	 * @param filename ç”¨äºè¡¨ç¤ºè¾“å…¥æ–‡ä»¶åã€‚
+	 * @brief ÓÃÓÚ½«Êä³öÖØ¶¨Ïò
+	 * @warning ×¢Òâ£¬³ı·ÇÊ¹ÓÃº¯Êı AutoGenerate£¬·ñÔòÔÚÈÎºÎÇé¿öÏÂ£¬ÇëÎñ±ØÏÈµ÷ÓÃ¸Ãº¯Êı¡£
+	 * @warning ×¢Òâ£¬Ê¹ÓÃ¸ÃÍ·ÎÄ¼şÊ±£¬Çë²»ÒªÊ¹ÓÃ freopen µÈÖØ¶¨Ïò¡£
+	 * @param filename ÓÃÓÚ±íÊ¾ÊäÈëÎÄ¼şÃû¡£
 	*/
 	void RedirectToFileFunc(string filename)
 	{
@@ -81,12 +81,15 @@ namespace Generator
 #define RedirectToFile(filename) RedirectToFileFunc(filename);\
 	std::ofstream &cout = *rout;
 
+#define FlushIOStream() std::ofstream &cout = *rout;
+
+
 	/**
-	 * @brief ç”¨äºæ³¨å†Œæ ‡ç®—ç¨‹åº
-	 * @warning æ³¨æ„ï¼Œæ³¨å†Œè¿‡ç¨‹åªéœ€è¦è°ƒç”¨ä¸€æ¬¡
-	 * @warning æ³¨æ„ï¼Œæ ‡ç®—ç¨‹åºè¯·ä¸è¦é‡å®šå‘æ–‡ä»¶ã€‚
-	 * @warning æ³¨æ„ï¼Œå¦‚æœè¦åœ¨ AutoGenerate å¯ç”¨ç”Ÿæˆç­”æ¡ˆæ”¯æŒï¼Œè¯·åŠ¡å¿…åœ¨ AutoGenerate è°ƒç”¨å‰è°ƒç”¨å®ƒã€‚
-	 * @param path æ ‡ç®—ç¨‹åºè·¯å¾„ã€‚
+	 * @brief ÓÃÓÚ×¢²á±êËã³ÌĞò
+	 * @warning ×¢Òâ£¬×¢²á¹ı³ÌÖ»ĞèÒªµ÷ÓÃÒ»´Î
+	 * @warning ×¢Òâ£¬±êËã³ÌĞòÇë²»ÒªÖØ¶¨ÏòÎÄ¼ş¡£
+	 * @warning ×¢Òâ£¬Èç¹ûÒªÔÚ AutoGenerate ÆôÓÃÉú³É´ğ°¸Ö§³Ö£¬ÇëÎñ±ØÔÚ AutoGenerate µ÷ÓÃÇ°µ÷ÓÃËü¡£
+	 * @param path ±êËã³ÌĞòÂ·¾¶¡£
 	*/
 	void RegisterStdProgram(string path)
 	{
@@ -96,11 +99,11 @@ namespace Generator
 	}
 
 	/**
-	 * @brief ç”¨äºç”Ÿæˆæ–‡ä»¶ç­”æ¡ˆã€‚
-	 * @warning æ³¨æ„ï¼Œè°ƒç”¨å‰è¯·å…ˆæ³¨å†Œæ ‡ç®—ã€‚
-	 * @warning è¯·ä¸è¦åœ¨ AutoGenerate çš„è‡ªå®šä¹‰å‡½æ•°ä¸­è°ƒç”¨å®ƒ
-	 * @param ansFilename è¾“å‡ºç­”æ¡ˆæ–‡ä»¶å
-	 * @param inputFilename è¾“å…¥æ–‡ä»¶åï¼Œé»˜è®¤ä¸º RedirectToFile æ‰€æŒ‡å‘çš„æ–‡ä»¶ã€‚
+	 * @brief ÓÃÓÚÉú³ÉÎÄ¼ş´ğ°¸¡£
+	 * @warning ×¢Òâ£¬µ÷ÓÃÇ°ÇëÏÈ×¢²á±êËã¡£
+	 * @warning Çë²»ÒªÔÚ AutoGenerate µÄ×Ô¶¨Òåº¯ÊıÖĞµ÷ÓÃËü
+	 * @param ansFilename Êä³ö´ğ°¸ÎÄ¼şÃû
+	 * @param inputFilename ÊäÈëÎÄ¼şÃû£¬Ä¬ÈÏÎª RedirectToFile ËùÖ¸ÏòµÄÎÄ¼ş¡£
 	*/
 	void GeneratreAns(string ansFilename, string inputFilename = nowFilename)
 	{
@@ -114,15 +117,15 @@ namespace Generator
 	}
 
 	/**
-	 * @brief ç”¨äºè‡ªåŠ¨ç”Ÿæˆè¾“å…¥æ•°æ®ã€‚
-	 * @param format è¾“å…¥æ–‡ä»¶çš„æ–‡ä»¶åæ ¼å¼ã€‚
-	 * @param startLabel è¡¨ç¤ºèµ·å§‹æ ‡å·ã€‚
-	 * @param endLabel è¡¨ç¤ºç»“æŸæ ‡å·ã€‚
-	 * @param custom ç”¨äºä¼ é€’ç”¨æˆ·è‡ªå®šä¹‰çš„ç”Ÿæˆæ–¹æ¡ˆå‡½æ•°ã€‚
-	 * @param enableStd ç”¨äºå†³å®šæ˜¯å¦å¯ç”¨æ ‡ç®—ç¨‹åºæ¥ç”¨äºç”Ÿæˆç­”æ¡ˆï¼Œé»˜è®¤ä¸ºä¸å¯ç”¨ï¼ˆfalseï¼‰ã€‚
-	 * @warning è¯·æ³¨æ„ï¼Œæ–‡ä»¶åçš„æ ¼å¼åº”å½“åŒ…å«ä¸”åªåŒ…å«ä¸€ä¸ª %dã€‚
-	 * @warning è¯·æ³¨æ„ï¼Œæ–‡ä»¶åä¸ä¼šè‡ªåŠ¨è¡¥å…¨åç¼€
-	 * @warning è¯·æ³¨æ„ï¼Œç­”æ¡ˆæ–‡ä»¶æ–‡ä»¶åä¼šæœ‰å¼ºåˆ¶åç¼€.ans
+	 * @brief ÓÃÓÚ×Ô¶¯Éú³ÉÊäÈëÊı¾İ¡£
+	 * @param format ÊäÈëÎÄ¼şµÄÎÄ¼şÃû¸ñÊ½¡£
+	 * @param startLabel ±íÊ¾ÆğÊ¼±êºÅ¡£
+	 * @param endLabel ±íÊ¾½áÊø±êºÅ¡£
+	 * @param custom ÓÃÓÚ´«µİÓÃ»§×Ô¶¨ÒåµÄÉú³É·½°¸º¯Êı¡£
+	 * @param enableStd ÓÃÓÚ¾ö¶¨ÊÇ·ñÆôÓÃ±êËã³ÌĞòÀ´ÓÃÓÚÉú³É´ğ°¸£¬Ä¬ÈÏÎª²»ÆôÓÃ£¨false£©¡£
+	 * @warning Çë×¢Òâ£¬ÎÄ¼şÃûµÄ¸ñÊ½Ó¦µ±°üº¬ÇÒÖ»°üº¬Ò»¸ö %d¡£
+	 * @warning Çë×¢Òâ£¬ÎÄ¼şÃû²»»á×Ô¶¯²¹È«ºó×º
+	 * @warning Çë×¢Òâ£¬´ğ°¸ÎÄ¼şÎÄ¼şÃû»áÓĞÇ¿ÖÆºó×º.ans
 	*/
 	void AutoGenerate( string format,
 	                   int startLabel, int endLabel, void (*custom)(),
@@ -154,15 +157,15 @@ namespace Generator
 	}
 
 	/**
-	 * @brief ç”¨äºè‡ªåŠ¨ç”Ÿæˆã€‚
-	 * @param format è¾“å…¥æ–‡ä»¶çš„æ–‡ä»¶åæ ¼å¼ã€‚
-	 * @param startLabel è¡¨ç¤ºèµ·å§‹æ ‡å·ã€‚
-	 * @param endLabel è¡¨ç¤ºç»“æŸæ ‡å·ã€‚
-	 * @param custom ç”¨äºä¼ é€’ç”¨æˆ·è‡ªå®šä¹‰çš„ç”Ÿæˆæ–¹æ¡ˆå‡½æ•°ã€‚
-	 * @param enableStd ç”¨äºå†³å®šæ˜¯å¦å¯ç”¨æ ‡ç®—ç¨‹åºæ¥ç”¨äºç”Ÿæˆç­”æ¡ˆï¼Œé»˜è®¤ä¸ºä¸å¯ç”¨ï¼ˆfalseï¼‰ã€‚
-	 * @warning è¯·æ³¨æ„ï¼Œæ–‡ä»¶åçš„æ ¼å¼åº”å½“åŒ…å«ä¸”åªåŒ…å«ä¸€ä¸ª %dã€‚
-	 * @warning è¯·æ³¨æ„ï¼Œæ–‡ä»¶åä¸ä¼šè‡ªåŠ¨è¡¥å…¨åç¼€
-	 * @warning è¯·æ³¨æ„ï¼Œç­”æ¡ˆæ–‡ä»¶æ–‡ä»¶åä¼šæœ‰å¼ºåˆ¶åç¼€.ans
+	 * @brief ÓÃÓÚ×Ô¶¯Éú³É¡£
+	 * @param format ÊäÈëÎÄ¼şµÄÎÄ¼şÃû¸ñÊ½¡£
+	 * @param startLabel ±íÊ¾ÆğÊ¼±êºÅ¡£
+	 * @param endLabel ±íÊ¾½áÊø±êºÅ¡£
+	 * @param custom ÓÃÓÚ´«µİÓÃ»§×Ô¶¨ÒåµÄÉú³É·½°¸º¯Êı¡£
+	 * @param enableStd ÓÃÓÚ¾ö¶¨ÊÇ·ñÆôÓÃ±êËã³ÌĞòÀ´ÓÃÓÚÉú³É´ğ°¸£¬Ä¬ÈÏÎª²»ÆôÓÃ£¨false£©¡£
+	 * @warning Çë×¢Òâ£¬ÎÄ¼şÃûµÄ¸ñÊ½Ó¦µ±°üº¬ÇÒÖ»°üº¬Ò»¸ö %d¡£
+	 * @warning Çë×¢Òâ£¬ÎÄ¼şÃû²»»á×Ô¶¯²¹È«ºó×º
+	 * @warning Çë×¢Òâ£¬´ğ°¸ÎÄ¼şÎÄ¼şÃû»áÓĞÇ¿ÖÆºó×º.ans
 	*/
 	void AutoGenerate( string format,
 	                   int startLabel, int endLabel, void (*custom)(int nowLabel),
@@ -199,13 +202,13 @@ namespace Generator
 	using std::string;
 
 	/**
-	 * @brief éšæœºç”Ÿæˆå™¨ï¼Œç”¨äºç”Ÿæˆæ•´æ•°ã€æµ®ç‚¹æ•°éšæœºå€¼å’Œéšæœºå­—ç¬¦ä¸²ã€‚
+	 * @brief Ëæ»úÉú³ÉÆ÷£¬ÓÃÓÚÉú³ÉÕûÊı¡¢¸¡µãÊıËæ»úÖµºÍËæ»ú×Ö·û´®¡£
 	*/
 	class Random
 	{
 		public:
 			/**
-			 * @brief Random ç±»æ„é€ å‡½æ•°
+			 * @brief Random Àà¹¹Ôìº¯Êı
 			*/
 			Random() {
 				seed = std::chrono::system_clock::now().time_since_epoch().count();
@@ -215,19 +218,19 @@ namespace Generator
 				rand_real = new std::default_random_engine(seed);
 			}
 			/**
-			 * @brief ç”ŸæˆæŒ‡å®šèŒƒå›´ [l,r] çš„æ•´æ•°
-			 * @param l ç”Ÿæˆçš„æœ€å°å€¼
-			 * @param r ç”Ÿæˆçš„æœ€å¤§å€¼
-			 * @warning æ³¨æ„ï¼Œè¯¥ç”Ÿæˆæ–¹å¼ä¸ä¸€å®šå‡åŒ€
+			 * @brief Éú³ÉÖ¸¶¨·¶Î§ [l,r] µÄÕûÊı
+			 * @param l Éú³ÉµÄ×îĞ¡Öµ
+			 * @param r Éú³ÉµÄ×î´óÖµ
+			 * @warning ×¢Òâ£¬¸ÃÉú³É·½Ê½²»Ò»¶¨¾ùÔÈ
 			*/
 			long long irand(long long l, long long r) {
 				asserti(r>=l,"Invalid range");
 				return (*rand_int)() % (r-l+1) + l;
 			}
 			/**
-			 * @brief ç”ŸæˆæŒ‡å®šèŒƒå›´ [l,r] çš„æµ®ç‚¹æ•°
-			 * @param l ç”Ÿæˆçš„æœ€å°å€¼
-			 * @param r ç”Ÿæˆçš„æœ€å¤§å€¼
+			 * @brief Éú³ÉÖ¸¶¨·¶Î§ [l,r] µÄ¸¡µãÊı
+			 * @param l Éú³ÉµÄ×îĞ¡Öµ
+			 * @param r Éú³ÉµÄ×î´óÖµ
 			*/
 			long double frand(long double l, long double r) {
 				asserti(r>=l, "Invalid range");
@@ -235,9 +238,9 @@ namespace Generator
 				return dist(*rand_real);
 			}
 			/**
-			 * @brief ç”ŸæˆæŒ‡å®šé•¿åº¦æŒ‡å®šå­—ç¬¦é›†çš„å­—ç¬¦ä¸²
-			 * @param length ç”Ÿæˆçš„å­—ç¬¦ä¸²é•¿åº¦
-			 * @param charset å­—ç¬¦é›†ï¼Œé»˜è®¤æ˜¯æ•°å­—åŠ å­—æ¯å¤§å°å†™
+			 * @brief Éú³ÉÖ¸¶¨³¤¶ÈÖ¸¶¨×Ö·û¼¯µÄ×Ö·û´®
+			 * @param length Éú³ÉµÄ×Ö·û´®³¤¶È
+			 * @param charset ×Ö·û¼¯£¬Ä¬ÈÏÊÇÊı×Ö¼Ó×ÖÄ¸´óĞ¡Ğ´
 			*/
 			string srand( unsigned long long length,
 			              string charset="0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZMXNCBV" ) {
@@ -259,25 +262,25 @@ namespace Generator
 	extern std::ofstream *rout;
 
 	enum SEQ_GEN_METHOD {
-	    METHOD_INTEGER = 1,// ç”Ÿæˆæ•´æ•°åºåˆ—
-	    METHOD_FLOAT,// ç”Ÿæˆæµ®ç‚¹æ•°åºåˆ—
-	    METHOD_CUSTOM//ç”Ÿæˆè‡ªå®šä¹‰åºåˆ—
+	    METHOD_INTEGER = 1,// Éú³ÉÕûÊıĞòÁĞ
+	    METHOD_FLOAT,// Éú³É¸¡µãÊıĞòÁĞ
+	    METHOD_CUSTOM//Éú³É×Ô¶¨ÒåĞòÁĞ
 	};
 
 	/**
-	 * @brief ç”¨äº Sequence ç±»çš„é…ç½®
+	 * @brief ÓÃÓÚ Sequence ÀàµÄÅäÖÃ
 	*/
 	template <typename T = int>
 	struct SEQ_GEN_CONF {
 		SEQ_GEN_CONF() {}
 		/**
-		 * @brief SEQ_GEN_CONF çš„æ„é€ å‡½æ•°
-		 * @param method ç”Ÿæˆæ–¹å¼
-		 * @param length ç”Ÿæˆåºåˆ—é•¿åº¦
-		 * @param vmin ç”Ÿæˆåºåˆ—çš„æœ€å°å€¼
-		 * @param vmax ç”Ÿæˆåºåˆ—çš„æœ€å¤§å€¼
-		 * @param split ç”Ÿæˆåºåˆ—çš„åˆ†å‰²æ–¹å¼ï¼Œé»˜è®¤ä¸ºç©ºæ ¼
-		 * @param ends ç”Ÿæˆåºåˆ—çš„ç»“æŸæ–¹å¼ï¼Œé»˜è®¤ä¸ºå›è½¦
+		 * @brief SEQ_GEN_CONF µÄ¹¹Ôìº¯Êı
+		 * @param method Éú³É·½Ê½
+		 * @param length Éú³ÉĞòÁĞ³¤¶È
+		 * @param vmin Éú³ÉĞòÁĞµÄ×îĞ¡Öµ
+		 * @param vmax Éú³ÉĞòÁĞµÄ×î´óÖµ
+		 * @param split Éú³ÉĞòÁĞµÄ·Ö¸î·½Ê½£¬Ä¬ÈÏÎª¿Õ¸ñ
+		 * @param ends Éú³ÉĞòÁĞµÄ½áÊø·½Ê½£¬Ä¬ÈÏÎª»Ø³µ
 		*/
 		SEQ_GEN_CONF( SEQ_GEN_METHOD method,
 		              unsigned long long length, T vmin, T vmax,
@@ -291,14 +294,14 @@ namespace Generator
 			this->ends = ends;
 		}
 		/**
-		 * @brief SEQ_GEN_CONF çš„æ„é€ å‡½æ•°
-		 * @param method ç”Ÿæˆæ–¹å¼
-		 * @param length ç”Ÿæˆåºåˆ—é•¿åº¦
-		 * @param vmin ç”Ÿæˆåºåˆ—çš„æœ€å°å€¼
-		 * @param vmax ç”Ÿæˆåºåˆ—çš„æœ€å¤§å€¼
-		 * @param eps ç”Ÿæˆåºåˆ—çš„æ•°æ®ç²¾åº¦
-		 * @param split ç”Ÿæˆåºåˆ—çš„åˆ†å‰²æ–¹å¼ï¼Œé»˜è®¤ä¸ºç©ºæ ¼
-		 * @param ends ç”Ÿæˆåºåˆ—çš„ç»“æŸæ–¹å¼ï¼Œé»˜è®¤ä¸ºå›è½¦
+		 * @brief SEQ_GEN_CONF µÄ¹¹Ôìº¯Êı
+		 * @param method Éú³É·½Ê½
+		 * @param length Éú³ÉĞòÁĞ³¤¶È
+		 * @param vmin Éú³ÉĞòÁĞµÄ×îĞ¡Öµ
+		 * @param vmax Éú³ÉĞòÁĞµÄ×î´óÖµ
+		 * @param eps Éú³ÉĞòÁĞµÄÊı¾İ¾«¶È
+		 * @param split Éú³ÉĞòÁĞµÄ·Ö¸î·½Ê½£¬Ä¬ÈÏÎª¿Õ¸ñ
+		 * @param ends Éú³ÉĞòÁĞµÄ½áÊø·½Ê½£¬Ä¬ÈÏÎª»Ø³µ
 		 * @overload
 		*/
 		SEQ_GEN_CONF( SEQ_GEN_METHOD method,
@@ -314,13 +317,13 @@ namespace Generator
 			this->ends = ends;
 		}
 		/**
-		 * @brief SEQ_GEN_CONF çš„æ„é€ å‡½æ•°
-		 * @param method ç”Ÿæˆæ–¹å¼
-		 * @param length ç”Ÿæˆåºåˆ—é•¿åº¦
-		 * @param customFunction è‡ªå®šä¹‰ç”Ÿæˆå‡½æ•°
-		 * @param split ç”Ÿæˆåºåˆ—çš„åˆ†å‰²æ–¹å¼ï¼Œé»˜è®¤ä¸ºç©ºæ ¼
-		 * @param ends ç”Ÿæˆåºåˆ—çš„ç»“æŸæ–¹å¼ï¼Œé»˜è®¤ä¸ºå›è½¦
-		 * @warning å¦‚æœç”Ÿæˆå‡½æ•°ä¹Ÿéœ€è¦ç²¾åº¦æ§åˆ¶ï¼Œè¯·æ‰§è¡Œä¿®æ”¹ epsã€‚
+		 * @brief SEQ_GEN_CONF µÄ¹¹Ôìº¯Êı
+		 * @param method Éú³É·½Ê½
+		 * @param length Éú³ÉĞòÁĞ³¤¶È
+		 * @param customFunction ×Ô¶¨ÒåÉú³Éº¯Êı
+		 * @param split Éú³ÉĞòÁĞµÄ·Ö¸î·½Ê½£¬Ä¬ÈÏÎª¿Õ¸ñ
+		 * @param ends Éú³ÉĞòÁĞµÄ½áÊø·½Ê½£¬Ä¬ÈÏÎª»Ø³µ
+		 * @warning Èç¹ûÉú³Éº¯ÊıÒ²ĞèÒª¾«¶È¿ØÖÆ£¬ÇëÖ´ĞĞĞŞ¸Ä eps¡£
 		*/
 		SEQ_GEN_CONF( SEQ_GEN_METHOD method,
 		              unsigned long long length, T (*customFunction)(int n),
@@ -332,37 +335,37 @@ namespace Generator
 			this->split = split;
 			this->ends = ends;
 		}
-		SEQ_GEN_METHOD method; // ç”Ÿæˆæ–¹å¼ï¼Œå¿…å¡«
-		unsigned long long length; // ç”Ÿæˆé•¿åº¦ï¼Œå¿…å¡«
-		T vmin; // ç”Ÿæˆæœ€å°å€¼ï¼Œè‹¥éæä¾›è‡ªå®šä¹‰ç”Ÿæˆå‡½æ•°ï¼Œåˆ™å¿…å¡«
-		T vmax; // ç”Ÿæˆæœ€å¤§å€¼ï¼Œè‹¥éæä¾›è‡ªå®šä¹‰ç”Ÿæˆå‡½æ•°ï¼Œåˆ™å¿…å¡«
-		unsigned eps = 3; // ç”Ÿæˆç²¾åº¦ï¼Œè‹¥éæµ®ç‚¹æ•°ç”Ÿæˆï¼Œåˆ™å¿½ç•¥ï¼Œè‹¥æµ®ç‚¹æ•°ç”Ÿæˆï¼Œåˆ™é»˜è®¤ç²¾åº¦ä¸º 3
-		std::string split; // åˆ†å‰²æ–¹å¼ï¼Œå¿…å¡«
-		std::string ends; // ç»“æŸæ–¹å¼ï¼Œå¿…å¡«
-		T (*customFunction)(int n) = nullptr; // è‡ªå®šä¹‰ç”Ÿæˆå‡½æ•°ï¼Œè‹¥ç¡®è®¤æä¾›è‡ªå®šä¹‰ç”Ÿæˆå‡½æ•°ï¼Œåˆ™å¿…å¡«
+		SEQ_GEN_METHOD method; // Éú³É·½Ê½£¬±ØÌî
+		unsigned long long length; // Éú³É³¤¶È£¬±ØÌî
+		T vmin; // Éú³É×îĞ¡Öµ£¬Èô·ÇÌá¹©×Ô¶¨ÒåÉú³Éº¯Êı£¬Ôò±ØÌî
+		T vmax; // Éú³É×î´óÖµ£¬Èô·ÇÌá¹©×Ô¶¨ÒåÉú³Éº¯Êı£¬Ôò±ØÌî
+		unsigned eps = 3; // Éú³É¾«¶È£¬Èô·Ç¸¡µãÊıÉú³É£¬ÔòºöÂÔ£¬Èô¸¡µãÊıÉú³É£¬ÔòÄ¬ÈÏ¾«¶ÈÎª 3
+		std::string split; // ·Ö¸î·½Ê½£¬±ØÌî
+		std::string ends; // ½áÊø·½Ê½£¬±ØÌî
+		T (*customFunction)(int n) = nullptr; // ×Ô¶¨ÒåÉú³Éº¯Êı£¬ÈôÈ·ÈÏÌá¹©×Ô¶¨ÒåÉú³Éº¯Êı£¬Ôò±ØÌî
 	};
 
 	/**
-	 * @brief ç”Ÿæˆåºåˆ—
-	 * @warning æ³¨æ„ï¼Œé»˜è®¤ç”Ÿæˆæ•´æ•°åºåˆ—
+	 * @brief Éú³ÉĞòÁĞ
+	 * @warning ×¢Òâ£¬Ä¬ÈÏÉú³ÉÕûÊıĞòÁĞ
 	*/
 	template <typename T=int>
 	class Sequence
 	{
 		public:
 			/**
-			 * @brief Sequence çš„é»˜è®¤æ„é€ å‡½æ•°ã€‚
+			 * @brief Sequence µÄÄ¬ÈÏ¹¹Ôìº¯Êı¡£
 			*/
 			Sequence() {}
 			/**
-			 * @brief Sequence çš„æ ‡å‡†æ„é€ ã€‚
+			 * @brief Sequence µÄ±ê×¼¹¹Ôì¡£
 			*/
 			Sequence(SEQ_GEN_CONF<T> config) {
 				SetConfig(config);
 			}
 			/**
-			 * @brief è®¾ç½®ç”Ÿæˆåºåˆ—è§„åˆ™
-			 * @param config è§„åˆ™ç»“æ„ä½“ï¼Œè¯¦æƒ…è¯·å‚ç…§ SEQ_GEN_CONF ç»“æ„ä½“
+			 * @brief ÉèÖÃÉú³ÉĞòÁĞ¹æÔò
+			 * @param config ¹æÔò½á¹¹Ìå£¬ÏêÇéÇë²ÎÕÕ SEQ_GEN_CONF ½á¹¹Ìå
 			*/
 			void SetConfig( SEQ_GEN_CONF<T> config ) {
 				settedConfig = true;
@@ -376,8 +379,8 @@ namespace Generator
 				genConfig = config;
 			}
 			/**
-			 * @brief å¯åŠ¨ç”Ÿæˆã€‚
-			 * @warning æ³¨æ„ï¼Œæ­¤å‡½æ•°å¹¶ä¸ä¼šè¿”å›ä»»ä½•å€¼ï¼Œå› ä¸ºä»–å°†ä¼šç›´æ¥è¾“å‡ºåˆ°æ–‡ä»¶ä¸­
+			 * @brief Æô¶¯Éú³É¡£
+			 * @warning ×¢Òâ£¬´Ëº¯Êı²¢²»»á·µ»ØÈÎºÎÖµ£¬ÒòÎªËû½«»áÖ±½ÓÊä³öµ½ÎÄ¼şÖĞ
 			*/
 			void Generate() {
 				asserti(settedConfig, "No config setted yet!!");
@@ -398,7 +401,7 @@ namespace Generator
 			}
 		protected:
 			/**
-			 * @brief ç”Ÿæˆæ•´æ•°åºåˆ—
+			 * @brief Éú³ÉÕûÊıĞòÁĞ
 			*/
 			void IntegerGen() {
 				std::ofstream &cout = *rout;
@@ -408,7 +411,7 @@ namespace Generator
 				cout << rnd.irand(genConfig.vmin, genConfig.vmax) << genConfig.ends;
 			}
 			/**
-			 * @brief ç”Ÿæˆæµ®ç‚¹æ•°åºåˆ—
+			 * @brief Éú³É¸¡µãÊıĞòÁĞ
 			*/
 			void FloatGen() {
 				std::ofstream &cout = *rout;
@@ -420,7 +423,7 @@ namespace Generator
 				cout << rnd.frand(genConfig.vmin, genConfig.vmax) << genConfig.ends;
 			}
 			/**
-			 * @brief ç”Ÿæˆè‡ªå®šä¹‰åºåˆ—
+			 * @brief Éú³É×Ô¶¨ÒåĞòÁĞ
 			*/
 			void CustomGen() {
 				std::ofstream &cout = *rout;
@@ -437,13 +440,13 @@ namespace Generator
 	};
 
 	/**
-	 * @brief ç”Ÿæˆæ’åˆ—
+	 * @brief Éú³ÉÅÅÁĞ
 	*/
 	class Permutation
 	{
 		public:
 			/**
-			 * @brief æ’åˆ—çš„æ„é€ å‡½æ•°
+			 * @brief ÅÅÁĞµÄ¹¹Ôìº¯Êı
 			*/
 			Permutation(int length) {
 				id = new int[length+1];
@@ -452,10 +455,10 @@ namespace Generator
 				shuffle();
 			}
 			/**
-			 * @brief è¾“å‡ºç”Ÿæˆç»“æœ
-			 * @param split åˆ†å‰²æ–¹å¼ï¼Œé»˜è®¤ä¸ºç©ºæ ¼
-			 * @param ends ç»“æŸæ–¹å¼ï¼Œé»˜è®¤ä¸ºæ¢è¡Œ
-			 * @warning æ³¨æ„ï¼Œsplit å’Œ ends éƒ½åº”å½“ä¸ºå­—ç¬¦ä¸²
+			 * @brief Êä³öÉú³É½á¹û
+			 * @param split ·Ö¸î·½Ê½£¬Ä¬ÈÏÎª¿Õ¸ñ
+			 * @param ends ½áÊø·½Ê½£¬Ä¬ÈÏÎª»»ĞĞ
+			 * @warning ×¢Òâ£¬split ºÍ ends ¶¼Ó¦µ±Îª×Ö·û´®
 			*/
 			void Output(string split = " ", string ends = "\n") {
 				std::ofstream &cout = *rout;
@@ -464,14 +467,14 @@ namespace Generator
 				cout << ends;
 			}
 			/**
-			 * @brief æ’åˆ—çš„ææ„å‡½æ•°ã€‚
+			 * @brief ÅÅÁĞµÄÎö¹¹º¯Êı¡£
 			*/
 			~Permutation() {
 				delete[] id;
 			}
 		protected:
 			/**
-			 * @brief æ‰“ä¹±æ’åˆ—
+			 * @brief ´òÂÒÅÅÁĞ
 			*/
 			void shuffle() {
 				for(int i = 1; i <= length; ++i) {
@@ -496,18 +499,18 @@ namespace Generator
 	typedef std::pair<int,int> pii;
 
 	/**
-	 * @brief å›¾çš„åŸºç±»ï¼Œç”¨äºå­˜å‚¨å›¾å’Œå®ç°å›¾ä¸­çš„ä¸€äº›åŠŸèƒ½ã€‚
+	 * @brief Í¼µÄ»ùÀà£¬ÓÃÓÚ´æ´¢Í¼ºÍÊµÏÖÍ¼ÖĞµÄÒ»Ğ©¹¦ÄÜ¡£
 	*/
 	class Graph
 	{
 		public:
 			/**
-			 * @brief å›¾çš„æ„é€ å‡½æ•°
-			 * @param verCount å›¾çš„ç‚¹æ•°
-			 * @param undirectedMap æ— å‘å›¾å¼€å…³ï¼Œé»˜è®¤ä¸ºæœ‰å‘å›¾ï¼ˆfalseï¼‰
-			 * @param weightedMap å¸¦æƒå›¾å¼€å…³ï¼Œé»˜è®¤ä¸ºä¸å¸¦æƒï¼ˆfalseï¼‰
-			 * @param muiltiedgeCheck é‡è¾¹æ£€æŸ¥å¼€å…³ï¼Œé»˜è®¤ä¸ºå…³é—­ï¼ˆfalseï¼‰
-			 * @param loopCheck è‡ªç¯æ£€æŸ¥å¼€å…³ï¼Œé»˜è®¤ä¸ºå…³é—­ï¼ˆfalseï¼‰
+			 * @brief Í¼µÄ¹¹Ôìº¯Êı
+			 * @param verCount Í¼µÄµãÊı
+			 * @param undirectedMap ÎŞÏòÍ¼¿ª¹Ø£¬Ä¬ÈÏÎªÓĞÏòÍ¼£¨false£©
+			 * @param weightedMap ´øÈ¨Í¼¿ª¹Ø£¬Ä¬ÈÏÎª²»´øÈ¨£¨false£©
+			 * @param muiltiedgeCheck ÖØ±ß¼ì²é¿ª¹Ø£¬Ä¬ÈÏÎª¹Ø±Õ£¨false£©
+			 * @param loopCheck ×Ô»·¼ì²é¿ª¹Ø£¬Ä¬ÈÏÎª¹Ø±Õ£¨false£©
 			*/
 			Graph( int verCount,
 			       bool undirectedMap = false, bool weightedMap = false,
@@ -522,14 +525,14 @@ namespace Generator
 				clear();
 			}
 			/**
-			 * @brief Graph ç±»çš„ææ„å‡½æ•°ï¼Œç”¨äºé˜²æ­¢ Graph ç±»å¼•å‘å†…å­˜æ³„æ¼
+			 * @brief Graph ÀàµÄÎö¹¹º¯Êı£¬ÓÃÓÚ·ÀÖ¹ Graph ÀàÒı·¢ÄÚ´æĞ¹Â©
 			*/
 			~Graph() {
 				delete[] id;
 			}
 			/**
-			 * @brief ç”¨äºæ¸…ç©ºå›¾
-			 * @warning æ³¨æ„ï¼Œæ¸…ç©ºå›¾å¹¶ä¸æ„å‘³ç€æ¸…ç©ºäº†å…¶å ç”¨çš„å†…å­˜ç©ºé—´ã€‚
+			 * @brief ÓÃÓÚÇå¿ÕÍ¼
+			 * @warning ×¢Òâ£¬Çå¿ÕÍ¼²¢²»ÒâÎ¶×ÅÇå¿ÕÁËÆäÕ¼ÓÃµÄÄÚ´æ¿Õ¼ä¡£
 			*/
 			void clear() {
 				for(register int i = 0; i <= vertexCount; ++i)
@@ -538,9 +541,9 @@ namespace Generator
 				edgeContainer.clear();
 			}
 			/**
-			 * @brief æ·»åŠ ä¸€æ¡è¾¹
-			 * @param from è¾¹çš„èµ·ç‚¹
-			 * @param to è¾¹çš„ç»ˆç‚¹
+			 * @brief Ìí¼ÓÒ»Ìõ±ß
+			 * @param from ±ßµÄÆğµã
+			 * @param to ±ßµÄÖÕµã
 			*/
 			bool add_edge(int from, int to) {
 				asserti(!weightedMapSwitch, "PANIC!! The operation doesn't match the setting.");
@@ -552,10 +555,10 @@ namespace Generator
 				return true;
 			}
 			/**
-			 * @brief æ·»åŠ ä¸€æ¡å¸¦æƒè¾¹
-			 * @param from è¾¹çš„èµ·ç‚¹
-			 * @param to è¾¹çš„ç»ˆç‚¹
-			 * @param weight è¾¹çš„æƒ
+			 * @brief Ìí¼ÓÒ»Ìõ´øÈ¨±ß
+			 * @param from ±ßµÄÆğµã
+			 * @param to ±ßµÄÖÕµã
+			 * @param weight ±ßµÄÈ¨
 			*/
 			bool add_edge(int from, int to, int weight) {
 				asserti(weightedMapSwitch, "PANIC!! The operation doesn't match the setting.");
@@ -567,14 +570,14 @@ namespace Generator
 				return true;
 			}
 			/**
-			 * @brief è¾“å‡ºå›¾çš„æ¥å£
-			 * @param shuffleOutput æ˜¯å¦å¯ç”¨ä¹±åºèŠ‚ç‚¹è¾“å‡º
+			 * @brief Êä³öÍ¼µÄ½Ó¿Ú
+			 * @param shuffleOutput ÊÇ·ñÆôÓÃÂÒĞò½ÚµãÊä³ö
 			*/
 			void Output(bool shuffleOutput = true) {
 				_output(shuffleOutput);
 			}
 			/**
-			 * @brief è·å–å›¾çš„è¾¹æ•°çš„æ¥å£
+			 * @brief »ñÈ¡Í¼µÄ±ßÊıµÄ½Ó¿Ú
 			*/
 			inline int GetEdgeCount() {
 				return _GetEdgeCount();
@@ -582,14 +585,14 @@ namespace Generator
 		protected:
 			int *id;
 			/**
-			 * @brief è·å–è¾¹æ•°çš„å®ç°
+			 * @brief »ñÈ¡±ßÊıµÄÊµÏÖ
 			*/
 			inline int _GetEdgeCount() {
 				return edgeContainer.size();
 			}
 			/**
-			 * @brief è¾“å‡ºå›¾çš„å®ç°
-			 * @param shuffleOutput æ‰“ä¹±ç‚¹åºè¾“å‡ºï¼Œé»˜è®¤ä¸ºå¯ç”¨ï¼ˆtrueï¼‰
+			 * @brief Êä³öÍ¼µÄÊµÏÖ
+			 * @param shuffleOutput ´òÂÒµãĞòÊä³ö£¬Ä¬ÈÏÎªÆôÓÃ£¨true£©
 			*/
 			void _output(bool shuffleOutput = true) {
 				std::ofstream &cout = *rout;
@@ -606,7 +609,7 @@ namespace Generator
 				}
 			}
 			/**
-			 * @brief æ‰“ä¹±ç‚¹åº
+			 * @brief ´òÂÒµãĞò
 			*/
 			void shuffle() {
 				Random rnd;
@@ -617,7 +620,7 @@ namespace Generator
 				std::shuffle(edgeContainer.begin(), edgeContainer.end(), std::mt19937_64(time(0)));
 			}
 			/**
-			 * @brief åŠ ä¸€æ¡å¸¦æƒè¾¹çš„å®ç°
+			 * @brief ¼ÓÒ»Ìõ´øÈ¨±ßµÄÊµÏÖ
 			*/
 			inline void __add_edge(int from, int to, int weight) {
 				edgeContainer.push_back( (EDGE) {
@@ -625,7 +628,7 @@ namespace Generator
 				} );
 			}
 			/**
-			 * @brief åŠ ä¸€æ¡æ— æƒè¾¹çš„å®ç°
+			 * @brief ¼ÓÒ»ÌõÎŞÈ¨±ßµÄÊµÏÖ
 			*/
 			inline void __add_edge(int from, int to) {
 				edgeContainer.push_back( (EDGE) {
@@ -633,9 +636,9 @@ namespace Generator
 				} );
 			}
 			/**
-			 * @brief é‡è¾¹æ£€æŸ¥å™¨
-			 * @return true åˆ™ä¸ºæ£€æŸ¥é€šè¿‡ï¼Œfalse åˆ™ä¸ºæ£€æŸ¥å¤±è´¥
-			 * @note è‹¥æ£€æŸ¥å¤±è´¥ï¼Œåˆ™ä¼šè¾“å‡ºæ—¥å¿—
+			 * @brief ÖØ±ß¼ì²éÆ÷
+			 * @return true ÔòÎª¼ì²éÍ¨¹ı£¬false ÔòÎª¼ì²éÊ§°Ü
+			 * @note Èô¼ì²éÊ§°Ü£¬Ôò»áÊä³öÈÕÖ¾
 			*/
 			inline bool multiedgeChecker(int from, int to) {
 				if(!muiltiedgeCheckSwitch)
@@ -650,9 +653,9 @@ namespace Generator
 				return true;
 			}
 			/**
-			 * @brief è‡ªç¯æ£€æŸ¥å™¨
-			 * @return true åˆ™ä¸ºæ£€æŸ¥é€šè¿‡ï¼Œfalse åˆ™ä¸ºæ£€æŸ¥å¤±è´¥
-			 * @note è‹¥æ£€æŸ¥å¤±è´¥ï¼Œåˆ™ä¼šè¾“å‡ºæ—¥å¿—
+			 * @brief ×Ô»·¼ì²éÆ÷
+			 * @return true ÔòÎª¼ì²éÍ¨¹ı£¬false ÔòÎª¼ì²éÊ§°Ü
+			 * @note Èô¼ì²éÊ§°Ü£¬Ôò»áÊä³öÈÕÖ¾
 			*/
 			inline bool loopChecker(int from, int to) {
 				if(!loopCheckSwitch)
@@ -677,31 +680,31 @@ namespace Generator
 	};
 
 	/**
-	 * @brief æ— æ ¹æ ‘ç”Ÿæˆæ–¹å¼
+	 * @brief ÎŞ¸ùÊ÷Éú³É·½Ê½
 	*/
 	enum NRT_GEN_CONF {
-	    METHOD_DAISY=5, //ç”Ÿæˆä¸€æœµèŠèŠ±
-	    METHOD_CHAIN=10, //ç”Ÿæˆä¸€æ¡é“¾
-	    METHOD_CHAIN_WITH_CHAIN=25, //ç”Ÿæˆé“¾å¥—é“¾
-	    METHOD_DAISY_WITH_DAISY=40, //ç”ŸæˆèŠèŠ±å¥—èŠèŠ±
-	    METHOD_CHAIN_WITH_DAISY=60, //ç”Ÿæˆé“¾å¥—èŠèŠ±
-	    METHOD_COMP_KB_TREE=75, //ç”Ÿæˆå®Œå…¨Kå‰æ ‘
-	    METHOD_RND_TREE=90, //ç”Ÿæˆéšæœºæ ‘
-	    METHOD_TREE_OVER_TREE=100 //ç”Ÿæˆéšæœºæ ‘å¥—éšæœºæ ‘
+	    METHOD_DAISY=5, //Éú³ÉÒ»¶ä¾Õ»¨
+	    METHOD_CHAIN=10, //Éú³ÉÒ»ÌõÁ´
+	    METHOD_CHAIN_WITH_CHAIN=25, //Éú³ÉÁ´Ì×Á´
+	    METHOD_DAISY_WITH_DAISY=40, //Éú³É¾Õ»¨Ì×¾Õ»¨
+	    METHOD_CHAIN_WITH_DAISY=60, //Éú³ÉÁ´Ì×¾Õ»¨
+	    METHOD_COMP_KB_TREE=75, //Éú³ÉÍêÈ«K²æÊ÷
+	    METHOD_RND_TREE=90, //Éú³ÉËæ»úÊ÷
+	    METHOD_TREE_OVER_TREE=100 //Éú³ÉËæ»úÊ÷Ì×Ëæ»úÊ÷
 	};
 
 	/**
-	 * @brief ç”Ÿæˆä¸€é¢—æ— æ ¹æ ‘
+	 * @brief Éú³ÉÒ»¿ÅÎŞ¸ùÊ÷
 	*/
 	class NoRootTree : protected Graph
 	{
 		public:
 			/**
-			 * @brief NoRootTree çš„å¸¦è¾¹æƒæ„é€ å‡½æ•°
-			 * @param verCount ç‚¹æ•°
-			 * @param vmin è¾¹æƒæœ€å°å€¼
-			 * @param vmax è¾¹æƒæœ€å¤§å€¼
-			 * @warning æ³¨æ„ï¼Œè¯¥æ„é€ å‡½æ•°ä¸å…¶å¦ä¸€ä¸ªé‡è½½æœ‰æœ¬è´¨ä¸åŒ
+			 * @brief NoRootTree µÄ´ø±ßÈ¨¹¹Ôìº¯Êı
+			 * @param verCount µãÊı
+			 * @param vmin ±ßÈ¨×îĞ¡Öµ
+			 * @param vmax ±ßÈ¨×î´óÖµ
+			 * @warning ×¢Òâ£¬¸Ã¹¹Ôìº¯ÊıÓëÆäÁíÒ»¸öÖØÔØÓĞ±¾ÖÊ²»Í¬
 			*/
 			NoRootTree(int verCount, int vmin, int vmax)
 				:Graph(verCount, true, true, true, true) {
@@ -712,9 +715,9 @@ namespace Generator
 				clear();
 			}
 			/**
-			 * @brief NoRootTree çš„æ— è¾¹æƒæ„é€ å‡½æ•°
-			 * @param verCount ç‚¹æ•°
-			 * @warning æ³¨æ„ï¼Œè¯¥æ„é€ å‡½æ•°ä¸å…¶å¦ä¸€ä¸ªé‡è½½æœ‰æœ¬è´¨ä¸åŒ
+			 * @brief NoRootTree µÄÎŞ±ßÈ¨¹¹Ôìº¯Êı
+			 * @param verCount µãÊı
+			 * @warning ×¢Òâ£¬¸Ã¹¹Ôìº¯ÊıÓëÆäÁíÒ»¸öÖØÔØÓĞ±¾ÖÊ²»Í¬
 			*/
 			NoRootTree(int verCount)
 				:Graph(verCount, true, false, true, true) {
@@ -723,7 +726,7 @@ namespace Generator
 				clear();
 			}
 			/**
-			 * @brief å¯ç”¨éšæœºç§ç±»ç”Ÿæˆ
+			 * @brief ÆôÓÃËæ»úÖÖÀàÉú³É
 			*/
 			void Generate() {
 				clear();
@@ -731,23 +734,23 @@ namespace Generator
 				_Generate(mode);
 			}
 			/**
-			 * @brief å¯ç”¨ç‰¹å®šç§ç±»ç”Ÿæˆ
+			 * @brief ÆôÓÃÌØ¶¨ÖÖÀàÉú³É
 			*/
 			void SpecificGenerate(NRT_GEN_CONF tgc) {
 				clear();
 				_Generate(tgc);
 			}
 			/**
-			 * @brief è¾“å‡ºç”Ÿæˆç»“æœ
+			 * @brief Êä³öÉú³É½á¹û
 			*/
 			void Output(bool shuffleOutput = true) {
 				this->_output(shuffleOutput);
 			}
 		protected:
 			/**
-			 * @brief åŠ ä¸€æ¡è¾¹ï¼ˆè‡ªåŠ¨ç”Ÿæˆè¾¹æƒï¼‰
-			 * @param from è¾¹çš„èµ·ç‚¹
-			 * @param to è¾¹çš„ç»ˆç‚¹
+			 * @brief ¼ÓÒ»Ìõ±ß£¨×Ô¶¯Éú³É±ßÈ¨£©
+			 * @param from ±ßµÄÆğµã
+			 * @param to ±ßµÄÖÕµã
 			*/
 			void add(int from, int to) {
 				if(weightedTreeSwitch)
@@ -756,7 +759,7 @@ namespace Generator
 					add_edge(from, to);
 			}
 			/**
-			 * @brief ç”Ÿæˆæ–¹å¼é€‰æ‹©å­
+			 * @brief Éú³É·½Ê½Ñ¡Ôñ×Ó
 			*/
 			void _Generate(int mode) {
 				if(mode<=5)
@@ -777,10 +780,10 @@ namespace Generator
 					TreeOverTree();
 			}
 			/**
-			 * @brief ç”Ÿæˆä¸€æœµèŠèŠ±
-			 * @param center ä¸­å¿ƒèŠ‚ç‚¹ç¼–å·
-			 * @param size èŠèŠ±å¤§å°
-			 * @param labelbegin è¾¹ç¼˜ç‚¹çš„èµ·å§‹ç¼–å·
+			 * @brief Éú³ÉÒ»¶ä¾Õ»¨
+			 * @param center ÖĞĞÄ½Úµã±àºÅ
+			 * @param size ¾Õ»¨´óĞ¡
+			 * @param labelbegin ±ßÔµµãµÄÆğÊ¼±àºÅ
 			*/
 			void Daisy(int center = 1, unsigned size = 0, int labelbegin = 1) {
 				if(!size)
@@ -789,11 +792,11 @@ namespace Generator
 					add(center, i);
 			}
 			/**
-			 * @brief ç”Ÿæˆä¸€æ¡é“¾
-			 * @param begin é“¾çš„èµ·å§‹èŠ‚ç‚¹
-			 * @param length é“¾çš„é•¿åº¦
-			 * @param labelbegin é“¾çš„ç¬¬äºŒèŠ‚ç‚¹ç¼–å·
-			 * @warning æ³¨æ„ï¼Œlabelbegin ä¸ begin æ²¡æœ‰å…³ç³»
+			 * @brief Éú³ÉÒ»ÌõÁ´
+			 * @param begin Á´µÄÆğÊ¼½Úµã
+			 * @param length Á´µÄ³¤¶È
+			 * @param labelbegin Á´µÄµÚ¶ş½Úµã±àºÅ
+			 * @warning ×¢Òâ£¬labelbegin Óë begin Ã»ÓĞ¹ØÏµ
 			*/
 			void Chain(int begin = 1, unsigned length = 0, int labelbegin = 1) {
 				if(!length)
@@ -804,11 +807,11 @@ namespace Generator
 				}
 			}
 			/**
-			 * @brief ç”Ÿæˆé“¾å¥—èŠèŠ±
-			 * @param ChainProbability ç”Ÿæˆé“¾çš„æ¦‚ç‡
-			 * @param DaisyProbability ç”ŸæˆèŠèŠ±çš„æ¦‚ç‡
-			 * @warning æ³¨æ„ï¼Œè¿™ä¸¤è€…çš„æ¦‚ç‡ç›¸åŠ å¿…é¡»è¦ç­‰äº 1
-			 * @warning æ³¨æ„ï¼Œé“¾å¥—èŠèŠ±ä¸ç­‰åŒäºèŠèŠ±é“¾
+			 * @brief Éú³ÉÁ´Ì×¾Õ»¨
+			 * @param ChainProbability Éú³ÉÁ´µÄ¸ÅÂÊ
+			 * @param DaisyProbability Éú³É¾Õ»¨µÄ¸ÅÂÊ
+			 * @warning ×¢Òâ£¬ÕâÁ½ÕßµÄ¸ÅÂÊÏà¼Ó±ØĞëÒªµÈÓÚ 1
+			 * @warning ×¢Òâ£¬Á´Ì×¾Õ»¨²»µÈÍ¬ÓÚ¾Õ»¨Á´
 			*/
 			void ChainWithDaisy( double ChainProbability=0.5,
 			                     double DaisyProbability=0.5 ) {
@@ -833,7 +836,7 @@ namespace Generator
 				}
 			}
 			/**
-			 * @brief ç”Ÿæˆé“¾å¥—é“¾
+			 * @brief Éú³ÉÁ´Ì×Á´
 			*/
 			void ChainWithChain() {
 				int bsize = sqrt(vertexCount);
@@ -848,7 +851,7 @@ namespace Generator
 				}
 			}
 			/**
-			 * @brief ç”ŸæˆèŠèŠ±å¥—èŠèŠ±
+			 * @brief Éú³É¾Õ»¨Ì×¾Õ»¨
 			*/
 			void DaisyWithDaisy() {
 				int bsize = sqrt(vertexCount);
@@ -863,9 +866,9 @@ namespace Generator
 				}
 			}
 			/**
-			 * @brief ç”Ÿæˆä¸€é¢—éšæœºæ„é€ æ ‘
-			 * @param beginlabel è¡¨ç¤ºèµ·å§‹èŠ‚ç‚¹ç¼–å·
-			 * @param endlabel è¡¨ç¤ºç»ˆæ­¢èŠ‚ç‚¹ç¼–å·
+			 * @brief Éú³ÉÒ»¿ÅËæ»ú¹¹ÔìÊ÷
+			 * @param beginlabel ±íÊ¾ÆğÊ¼½Úµã±àºÅ
+			 * @param endlabel ±íÊ¾ÖÕÖ¹½Úµã±àºÅ
 			*/
 			void RandomTree(int beginlabel = 1, int endlabel = 0) {
 				if(!endlabel)
@@ -876,7 +879,7 @@ namespace Generator
 				}
 			}
 			/**
-			 * @brief ç”Ÿæˆä¸€é¢—å®Œå…¨ K å‰æ ‘
+			 * @brief Éú³ÉÒ»¿ÅÍêÈ« K ²æÊ÷
 			*/
 			void CompleteKBTree() {
 				int k = rnd.irand(2, 5);
@@ -888,7 +891,7 @@ namespace Generator
 				}
 			}
 			/**
-			 * @brief ç”Ÿæˆéšæœºæ„é€ æ ‘å¥—éšæœºæ„é€ æ ‘
+			 * @brief Éú³ÉËæ»ú¹¹ÔìÊ÷Ì×Ëæ»ú¹¹ÔìÊ÷
 			*/
 			void TreeOverTree() {
 				int bsize = sqrt(vertexCount);
@@ -907,14 +910,14 @@ namespace Generator
 	};
 
 	/**
-	 * @brief ç”ŸæˆèŠèŠ±é“¾
+	 * @brief Éú³É¾Õ»¨Á´
 	*/
 	class DaisyChain : protected Graph
 	{
 		public:
 			/**
-			 * @brief æ— æƒ DaisyChain çš„æ„é€ å‡½æ•°
-			 * @param verCount èŠèŠ±é“¾çš„èŠ‚ç‚¹æ•°
+			 * @brief ÎŞÈ¨ DaisyChain µÄ¹¹Ôìº¯Êı
+			 * @param verCount ¾Õ»¨Á´µÄ½ÚµãÊı
 			*/
 			DaisyChain(int verCount)
 				:Graph(verCount, false, false, true, true) {
@@ -922,9 +925,9 @@ namespace Generator
 				weightedDaisyMapSwitch = false;
 			}
 			/**
-			 * @brief å¸¦æƒ DaisyChain çš„æ„é€ å‡½æ•°
-			 * @param vmin è¾¹æƒæœ€å°å€¼
-			 * @param vmax è¾¹æƒæœ€å¤§å€¼
+			 * @brief ´øÈ¨ DaisyChain µÄ¹¹Ôìº¯Êı
+			 * @param vmin ±ßÈ¨×îĞ¡Öµ
+			 * @param vmax ±ßÈ¨×î´óÖµ
 			*/
 			DaisyChain(int verCount, int vmin, int vmax)
 				:Graph(verCount, false, true, true, true) {
@@ -934,7 +937,7 @@ namespace Generator
 				vmin = vmin;
 			}
 			/**
-			 * @brief å¯åŠ¨ç”Ÿæˆ
+			 * @brief Æô¶¯Éú³É
 			*/
 			void Generate() {
 				clear();
@@ -945,16 +948,16 @@ namespace Generator
 					add(i, i-1);
 			}
 			/**
-			 * @brief è¾“å‡ºç”Ÿæˆç»“æœ
+			 * @brief Êä³öÉú³É½á¹û
 			*/
 			void Output(bool shuffleOutput = true) {
 				_output(shuffleOutput);
 			}
 		protected:
 			/**
-			 * @brief åŠ ä¸€æ¡è¾¹ï¼ˆè‡ªåŠ¨ç”Ÿæˆè¾¹æƒï¼‰
-			 * @param from è¾¹çš„èµ·ç‚¹
-			 * @param to è¾¹çš„ç»ˆç‚¹
+			 * @brief ¼ÓÒ»Ìõ±ß£¨×Ô¶¯Éú³É±ßÈ¨£©
+			 * @param from ±ßµÄÆğµã
+			 * @param to ±ßµÄÖÕµã
 			*/
 			void add(int from, int to) {
 				if(weightedDaisyMapSwitch)
@@ -971,15 +974,15 @@ namespace Generator
 	};
 
 	/**
-	 * @brief ç”Ÿæˆå¼ºå¯¹æŠ— SPFA å›¾ï¼ˆç½‘æ ¼å›¾ï¼‰
+	 * @brief Éú³ÉÇ¿¶Ô¿¹ SPFA Í¼£¨Íø¸ñÍ¼£©
 	*/
 	class AntiSPFA : protected Graph
 	{
 		public:
 			/**
-			 * @brief AntiSPFA æ„é€ å‡½æ•°
-			 * @param n ç½‘æ ¼å›¾ n è¡Œ
-			 * @param m ç½‘æ ¼å›¾ m åˆ—
+			 * @brief AntiSPFA ¹¹Ôìº¯Êı
+			 * @param n Íø¸ñÍ¼ n ĞĞ
+			 * @param m Íø¸ñÍ¼ m ÁĞ
 			*/
 			AntiSPFA(int n, int m)
 				:Graph(n*m, false, true, true, true) {
@@ -989,21 +992,21 @@ namespace Generator
 				this->vmax = vmax;
 			}
 			/**
-			 * @brief è·å–èµ·ç‚¹
+			 * @brief »ñÈ¡Æğµã
 			*/
 			inline int GetStart() {
 				return id[1];
 			}
 			/**
-			 * @brief è·å–è¾¹æ•°
+			 * @brief »ñÈ¡±ßÊı
 			*/
 			inline int GetEdgeCount() {
 				return _GetEdgeCount();
 			}
 			/**
-			 * @brief å¯åŠ¨ç”Ÿæˆ
-			 * @param vmin è¾¹æƒæœ€å°å€¼
-			 * @param vmax è¾¹æƒæœ€å¤§å€¼
+			 * @brief Æô¶¯Éú³É
+			 * @param vmin ±ßÈ¨×îĞ¡Öµ
+			 * @param vmax ±ßÈ¨×î´óÖµ
 			*/
 			void Generate(int vmin, int vmax) {
 				clear();
@@ -1025,9 +1028,9 @@ namespace Generator
 						add_edge(getIndex(i, j), getIndex(i+1, j+1), rnd.irand(vmin, vmax));
 			}
 			/**
-			 * @brief å¯ç”¨è‡ªåŠ¨ç”Ÿæˆæ¨¡å¼
-			 * @param vmin è¾¹æƒæœ€å°å€¼
-			 * @param vmax è¾¹æƒæœ€å¤§å€¼
+			 * @brief ÆôÓÃ×Ô¶¯Éú³ÉÄ£Ê½
+			 * @param vmin ±ßÈ¨×îĞ¡Öµ
+			 * @param vmax ±ßÈ¨×î´óÖµ
 			*/
 			inline void AutoMode(int vmin, int vmax) {
 				std::ofstream &cout = *rout;
@@ -1036,16 +1039,16 @@ namespace Generator
 				Output();
 			}
 			/**
-			 * @brief è¾“å‡ºç”Ÿæˆç»“æœ
+			 * @brief Êä³öÉú³É½á¹û
 			*/
 			void Output() {
 				_output(false);
 			}
 		protected:
 			/**
-			 * @brief è·å–äºŒç»´ç½‘æ ¼å›¾èŠ‚ç‚¹åœ¨ä¸€ç»´æ•°ç»„ä¸­çš„å®é™…å­˜å‚¨ä½ç½®\
-			 * @param i ç¬¬ i è¡Œ
-			 * @param j ç¬¬ j åˆ—
+			 * @brief »ñÈ¡¶şÎ¬Íø¸ñÍ¼½ÚµãÔÚÒ»Î¬Êı×éÖĞµÄÊµ¼Ê´æ´¢Î»ÖÃ\
+			 * @param i µÚ i ĞĞ
+			 * @param j µÚ j ÁĞ
 			*/
 			inline int getIndex(int i, int j) {
 				return (i-1)*m+j;
@@ -1057,18 +1060,18 @@ namespace Generator
 	};
 
 	/**
-	 * @brief ç”Ÿæˆéšæœºå›¾
-	 * @note å…è®¸å›¾ä¸è¿é€šï¼Œä½†ä¸å…è®¸è‡ªç¯å’Œé‡è¾¹
+	 * @brief Éú³ÉËæ»úÍ¼
+	 * @note ÔÊĞíÍ¼²»Á¬Í¨£¬µ«²»ÔÊĞí×Ô»·ºÍÖØ±ß
 	*/
 	class RandomGraph : protected Graph
 	{
 		public:
 			/**
-			 * @brief éšæœºæ— æƒå›¾çš„æ„é€ å‡½æ•°
-			 * @param verCount éšæœºå›¾ç‚¹æ•°
-			 * @param edgeCount éšæœºå›¾è¾¹æ•°
-			 * @param undirectedMap æ— å‘å›¾å¼€å…³ï¼Œé»˜è®¤ä¸ºæœ‰å‘å›¾ï¼ˆfalseï¼‰
-			 * @warning è¯¥ç”Ÿæˆå™¨å¹¶éé«˜æ€§èƒ½ç”Ÿæˆå™¨ï¼Œå½“è¾¹æ•°è¾ƒå¤§æ—¶å¯èƒ½ä¼šå‡ºç°ä¸¥é‡çš„æ€§èƒ½ä¸‹é™
+			 * @brief Ëæ»úÎŞÈ¨Í¼µÄ¹¹Ôìº¯Êı
+			 * @param verCount Ëæ»úÍ¼µãÊı
+			 * @param edgeCount Ëæ»úÍ¼±ßÊı
+			 * @param undirectedMap ÎŞÏòÍ¼¿ª¹Ø£¬Ä¬ÈÏÎªÓĞÏòÍ¼£¨false£©
+			 * @warning ¸ÃÉú³ÉÆ÷²¢·Ç¸ßĞÔÄÜÉú³ÉÆ÷£¬µ±±ßÊı½Ï´óÊ±¿ÉÄÜ»á³öÏÖÑÏÖØµÄĞÔÄÜÏÂ½µ
 			*/
 			RandomGraph(int verCount, int edgeCount, bool undirectedMap = false)
 				:Graph(verCount, undirectedMap, false, true, true),
@@ -1076,13 +1079,13 @@ namespace Generator
 				 weightedMapSwitch(false) {
 			}
 			/**
-			 * @brief éšæœºå¸¦æƒå›¾çš„æ„é€ å‡½æ•°
-			 * @param verCount éšæœºå›¾ç‚¹æ•°
-			 * @param edgeCoucnt éšæœºå›¾è¾¹æ•°
-			 * @param vmin è¾¹æƒæœ€å°å€¼
-			 * @param vmax è¾¹æƒæœ€å¤§å€¼
-			 * @param undirectedMap æ— å‘å›¾å¼€å…³ï¼Œé»˜è®¤ä¸ºæœ‰å‘å›¾ï¼ˆfalseï¼‰
-			 * @warning è¯¥ç”Ÿæˆå™¨å¹¶éé«˜æ€§èƒ½ç”Ÿæˆå™¨ï¼Œå½“è¾¹æ•°è¾ƒå¤§æ—¶å¯èƒ½ä¼šå‡ºç°ä¸¥é‡çš„æ€§èƒ½ä¸‹é™
+			 * @brief Ëæ»ú´øÈ¨Í¼µÄ¹¹Ôìº¯Êı
+			 * @param verCount Ëæ»úÍ¼µãÊı
+			 * @param edgeCoucnt Ëæ»úÍ¼±ßÊı
+			 * @param vmin ±ßÈ¨×îĞ¡Öµ
+			 * @param vmax ±ßÈ¨×î´óÖµ
+			 * @param undirectedMap ÎŞÏòÍ¼¿ª¹Ø£¬Ä¬ÈÏÎªÓĞÏòÍ¼£¨false£©
+			 * @warning ¸ÃÉú³ÉÆ÷²¢·Ç¸ßĞÔÄÜÉú³ÉÆ÷£¬µ±±ßÊı½Ï´óÊ±¿ÉÄÜ»á³öÏÖÑÏÖØµÄĞÔÄÜÏÂ½µ
 			*/
 			RandomGraph( int verCount, int edgeCount, int vmin, int vmax,
 			             bool undirectedMap = false)
@@ -1092,7 +1095,7 @@ namespace Generator
 				 weightedMapSwitch(true) {
 			}
 			/**
-			 * @brief å¯ç”¨ç”Ÿæˆ
+			 * @brief ÆôÓÃÉú³É
 			*/
 			void Generate() {
 				while(edgeCount) {
@@ -1102,17 +1105,17 @@ namespace Generator
 				}
 			}
 			/**
-			 * @brief è¾“å‡ºç”Ÿæˆç»“æœ
-			 * @param shuffleOutput æ‰“ä¹±èŠ‚ç‚¹è¾“å‡ºï¼Œé»˜è®¤ä¸ºæ‰“ä¹±ï¼ˆtrueï¼‰
+			 * @brief Êä³öÉú³É½á¹û
+			 * @param shuffleOutput ´òÂÒ½ÚµãÊä³ö£¬Ä¬ÈÏÎª´òÂÒ£¨true£©
 			*/
 			void Output(bool shuffleOutput = true) {
 				_output(shuffleOutput);
 			}
 		protected:
 			/**
-			 * @brief åŠ ä¸€æ¡è¾¹ï¼ˆè‡ªåŠ¨ç”Ÿæˆè¾¹æƒï¼‰
-			 * @param from è¾¹çš„èµ·ç‚¹
-			 * @param to è¾¹çš„ç»ˆç‚¹
+			 * @brief ¼ÓÒ»Ìõ±ß£¨×Ô¶¯Éú³É±ßÈ¨£©
+			 * @param from ±ßµÄÆğµã
+			 * @param to ±ßµÄÖÕµã
 			*/
 			bool add(int from, int to) {
 				if(weightedMapSwitch)
@@ -1129,15 +1132,15 @@ namespace Generator
 	};
 
 	/**
-	 * @brief ç”Ÿæˆä¸€å¼ æœ‰å‘æ— ç¯å›¾ã€‚
+	 * @brief Éú³ÉÒ»ÕÅÓĞÏòÎŞ»·Í¼¡£
 	*/
 	class DAG : protected Graph
 	{
 		public:
 			/**
-			 * @brief æ— æƒæœ‰å‘æ— ç¯å›¾çš„æ„é€ å‡½æ•°
-			 * @param verCount æœ‰å‘æ— ç¯å›¾çš„ç‚¹æ•°
-			 * @param edgeCount æœ‰å‘æ— ç¯å›¾çš„è¾¹æ•°
+			 * @brief ÎŞÈ¨ÓĞÏòÎŞ»·Í¼µÄ¹¹Ôìº¯Êı
+			 * @param verCount ÓĞÏòÎŞ»·Í¼µÄµãÊı
+			 * @param edgeCount ÓĞÏòÎŞ»·Í¼µÄ±ßÊı
 			*/
 			DAG(int verCount, int edgeCount)
 				:Graph(verCount, false, false, true, true),
@@ -1146,11 +1149,11 @@ namespace Generator
 				asserti(edgeCount >= verCount - 1, "Invalid edge count.");
 			}
 			/**
-			 * @brief å¸¦æƒæœ‰å‘æ— ç¯å›¾çš„æ„é€ å‡½æ•°
-			 * @param verCount æœ‰å‘æ— ç¯å›¾çš„ç‚¹æ•°
-			 * @param edgeCount æœ‰å‘æ— ç¯å›¾çš„è¾¹æ•°
-			 * @param vmin è¾¹æƒæœ€å°å€¼
-			 * @param vmax è¾¹æƒæœ€å¤§å€¼
+			 * @brief ´øÈ¨ÓĞÏòÎŞ»·Í¼µÄ¹¹Ôìº¯Êı
+			 * @param verCount ÓĞÏòÎŞ»·Í¼µÄµãÊı
+			 * @param edgeCount ÓĞÏòÎŞ»·Í¼µÄ±ßÊı
+			 * @param vmin ±ßÈ¨×îĞ¡Öµ
+			 * @param vmax ±ßÈ¨×î´óÖµ
 			*/
 			DAG(int verCount, int edgeCount, int vmin, int vmax)
 				:Graph(verCount, false, true, true, true),
@@ -1160,7 +1163,7 @@ namespace Generator
 				asserti(edgeCount >= verCount - 1, "Invalid edge count.");
 			}
 			/**
-			 * @brief å¯ç”¨ç”Ÿæˆ
+			 * @brief ÆôÓÃÉú³É
 			*/
 			void Generate() {
 				for(int i = 2; i <= vertexCount; i++) {
@@ -1179,17 +1182,17 @@ namespace Generator
 				}
 			}
 			/**
-			 * @brief è¾“å‡ºç”Ÿæˆç»“æœ
-			 * @param shuffleOutput æ‰“ä¹±èŠ‚ç‚¹è¾“å‡ºï¼Œé»˜è®¤ä¸ºæ‰“ä¹±ï¼ˆtrueï¼‰
+			 * @brief Êä³öÉú³É½á¹û
+			 * @param shuffleOutput ´òÂÒ½ÚµãÊä³ö£¬Ä¬ÈÏÎª´òÂÒ£¨true£©
 			*/
 			void Output(bool shuffleOutput = true) {
 				_output(shuffleOutput);
 			}
 		protected:
 			/**
-			 * @brief åŠ ä¸€æ¡è¾¹ï¼ˆè‡ªåŠ¨ç”Ÿæˆè¾¹æƒï¼‰
-			 * @param from è¾¹çš„èµ·ç‚¹
-			 * @param to è¾¹çš„ç»ˆç‚¹
+			 * @brief ¼ÓÒ»Ìõ±ß£¨×Ô¶¯Éú³É±ßÈ¨£©
+			 * @param from ±ßµÄÆğµã
+			 * @param to ±ßµÄÖÕµã
 			*/
 			bool add(int from, int to) {
 				if(weightedMapSwitch)
@@ -1205,16 +1208,16 @@ namespace Generator
 			Random rnd;
 	};
 	/**
-	 * @brief ç”Ÿæˆä¸€æ£µä»™äººæŒ
-	 * @note å› ä¸ºæœ¬äººå°šèœï¼Œæ‰€ä»¥è¯¥ç”Ÿæˆå™¨åªèƒ½æŒ‡å®šç‚¹æ•°äº†/kk
-	 * @warning è¯·å¼€å‘ç»„æ³¨æ„ï¼Œè¯¥æ–¹æ³•å¯èƒ½ä¼šäº§ç”Ÿ BUG
+	 * @brief Éú³ÉÒ»¿ÃÏÉÈËÕÆ
+	 * @note ÒòÎª±¾ÈËÉĞ²Ë£¬ËùÒÔ¸ÃÉú³ÉÆ÷Ö»ÄÜÖ¸¶¨µãÊıÁË/kk
+	 * @warning Çë¿ª·¢×é×¢Òâ£¬¸Ã·½·¨¿ÉÄÜ»á²úÉú BUG
 	*/
 	class Cactus
 	{
 		public:
 			/**
-			 * @brief æ— æƒ Cactus çš„æ„é€ å‡½æ•°
-			 * @param verCount èŠ‚ç‚¹æ•°
+			 * @brief ÎŞÈ¨ Cactus µÄ¹¹Ôìº¯Êı
+			 * @param verCount ½ÚµãÊı
 			*/
 			Cactus(int verCount) {
 				vertexCount = verCount;
@@ -1223,10 +1226,10 @@ namespace Generator
 				clear();
 			}
 			/**
-			 * @brief å¸¦æƒ Cactus çš„æ„é€ å‡½æ•°
-			 * @param verCount èŠ‚ç‚¹æ•°
-			 * @param vmin è¾¹æƒæœ€å°å€¼
-			 * @param vmax è¾¹æƒæœ€å¤§å€¼
+			 * @brief ´øÈ¨ Cactus µÄ¹¹Ôìº¯Êı
+			 * @param verCount ½ÚµãÊı
+			 * @param vmin ±ßÈ¨×îĞ¡Öµ
+			 * @param vmax ±ßÈ¨×î´óÖµ
 			*/
 			Cactus(int verCount, int vmin, int vmax)
 				:vmin(vmin), vmax(vmax) {
@@ -1236,7 +1239,7 @@ namespace Generator
 				clear();
 			}
 			/**
-			 * @brief Cactus çš„ææ„å‡½æ•°
+			 * @brief Cactus µÄÎö¹¹º¯Êı
 			*/
 			~Cactus() {
 				delete[] head;
@@ -1250,7 +1253,7 @@ namespace Generator
 				delete[] id;
 			}
 			/**
-			 * @brief æ¸…ç©º Cactus
+			 * @brief Çå¿Õ Cactus
 			*/
 			void clear() {
 				tot = 0;
@@ -1266,7 +1269,7 @@ namespace Generator
 					id[i] = i;
 			}
 			/**
-			 * @brief å¯ç”¨ç”Ÿæˆ
+			 * @brief ÆôÓÃÉú³É
 			*/
 			void Generate() {
 				for(int i = 2; i <= vertexCount; i++) {
@@ -1280,8 +1283,8 @@ namespace Generator
 				}
 			}
 			/**
-			 * @brief è¾“å‡ºç”Ÿæˆç»“æœ
-			 * @param shuffleOutput æ‰“ä¹±èŠ‚ç‚¹è¾“å‡ºï¼Œé»˜è®¤ä¸ºæ‰“ä¹±ï¼ˆtrueï¼‰
+			 * @brief Êä³öÉú³É½á¹û
+			 * @param shuffleOutput ´òÂÒ½ÚµãÊä³ö£¬Ä¬ÈÏÎª´òÂÒ£¨true£©
 			*/
 			void Output(bool shuffleOutput = true) {
 				_output(shuffleOutput);
@@ -1299,16 +1302,16 @@ namespace Generator
 				id = new int[verCount];
 			}
 			/**
-			 * @brief æ ‘é“¾å‰–åˆ†
+			 * @brief Ê÷Á´ÆÊ·Ö
 			*/
 			void TreeDecomposition() {
 				dfs1(1, 1);
 				dfs2(1, 1);
 			}
 			/**
-			 * @brief æ ‘é“¾å‰–åˆ†é¢„å¤„ç†
-			 * @param u å½“å‰èŠ‚ç‚¹
-			 * @param f å½“å‰èŠ‚ç‚¹çš„çˆ¶èŠ‚ç‚¹
+			 * @brief Ê÷Á´ÆÊ·ÖÔ¤´¦Àí
+			 * @param u µ±Ç°½Úµã
+			 * @param f µ±Ç°½ÚµãµÄ¸¸½Úµã
 			*/
 			void dfs1(int u, int f) {
 				siz[u] = 1;
@@ -1327,9 +1330,9 @@ namespace Generator
 				}
 			}
 			/**
-			 * @brief æ ‘é“¾å‰–åˆ†
-			 * @param u å½“å‰èŠ‚ç‚¹
-			 * @param t é“¾é¡¶
+			 * @brief Ê÷Á´ÆÊ·Ö
+			 * @param u µ±Ç°½Úµã
+			 * @param t Á´¶¥
 			*/
 			void dfs2(int u, int t) {
 				if(!hson[u]) {
@@ -1344,9 +1347,9 @@ namespace Generator
 				}
 			}
 			/**
-			 * @brief åŠ ä¸€æ¡è¾¹ï¼ˆè‡ªåŠ¨ç”Ÿæˆè¾¹æƒï¼‰
-			 * @param from è¾¹çš„èµ·ç‚¹
-			 * @param to è¾¹çš„ç»ˆç‚¹
+			 * @brief ¼ÓÒ»Ìõ±ß£¨×Ô¶¯Éú³É±ßÈ¨£©
+			 * @param from ±ßµÄÆğµã
+			 * @param to ±ßµÄÖÕµã
 			*/
 			void add(int from, int to) {
 				if(weightedMapSwitch)
@@ -1355,28 +1358,28 @@ namespace Generator
 					add_edge(from, to);
 			}
 			/**
-			 * @brief æ·»åŠ ä¸€æ¡æ— å‘æ— æƒè¾¹
-			 * @param from è¾¹çš„èµ·ç‚¹
-			 * @param to è¾¹çš„ç»ˆç‚¹
+			 * @brief Ìí¼ÓÒ»ÌõÎŞÏòÎŞÈ¨±ß
+			 * @param from ±ßµÄÆğµã
+			 * @param to ±ßµÄÖÕµã
 			*/
 			void add_edge(int from, int to) {
 				_add_edge(from, to);
 				_add_edge(to, from);
 			}
 			/**
-			 * @brief æ·»åŠ ä¸€æ¡æ— å‘å¸¦æƒè¾¹
-			 * @param from è¾¹çš„èµ·ç‚¹
-			 * @param to è¾¹çš„ç»ˆç‚¹
-			 * @param weight è¾¹æƒ
+			 * @brief Ìí¼ÓÒ»ÌõÎŞÏò´øÈ¨±ß
+			 * @param from ±ßµÄÆğµã
+			 * @param to ±ßµÄÖÕµã
+			 * @param weight ±ßÈ¨
 			*/
 			void add_edge(int from, int to, int weight) {
 				_add_edge(from, to, weight);
 				_add_edge(to, from, weight);
 			}
 			/**
-			 * @brief æ·»åŠ ä¸€æ¡æœ‰å‘æ— æƒè¾¹
-			 * @param from è¾¹çš„èµ·ç‚¹
-			 * @param to è¾¹çš„ç»ˆç‚¹
+			 * @brief Ìí¼ÓÒ»ÌõÓĞÏòÎŞÈ¨±ß
+			 * @param from ±ßµÄÆğµã
+			 * @param to ±ßµÄÖÕµã
 			*/
 			void _add_edge(int from, int to) {
 				ver[++tot] = to;
@@ -1384,10 +1387,10 @@ namespace Generator
 				head[from] = tot;
 			}
 			/**
-			 * @brief æ·»åŠ ä¸€æ¡æœ‰å‘å¸¦æƒè¾¹
-			 * @param from è¾¹çš„èµ·ç‚¹
-			 * @param to è¾¹çš„ç»ˆç‚¹
-			 * @param weight è¾¹æƒ
+			 * @brief Ìí¼ÓÒ»ÌõÓĞÏò´øÈ¨±ß
+			 * @param from ±ßµÄÆğµã
+			 * @param to ±ßµÄÖÕµã
+			 * @param weight ±ßÈ¨
 			*/
 			void _add_edge(int from, int to, int weight) {
 				ver[++tot] = to;
@@ -1396,7 +1399,7 @@ namespace Generator
 				head[from] = tot;
 			}
 			/**
-			 * @brief æ‰“ä¹±èŠ‚ç‚¹ç¼–å·
+			 * @brief ´òÂÒ½Úµã±àºÅ
 			*/
 			void shuffle() {
 				Random rnd;
@@ -1406,7 +1409,7 @@ namespace Generator
 				}
 			}
 			/**
-			 * @brief è¾“å‡ºå›¾çš„å®ç°
+			 * @brief Êä³öÍ¼µÄÊµÏÖ
 			*/
 			void _output(bool shuffleOutput = true) {
 				std::ofstream &cout = *rout;

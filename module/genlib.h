@@ -83,6 +83,8 @@ namespace Generator
     #define RedirectToFile(filename) RedirectToFileFunc(filename);\
         std::ofstream &cout = *rout;
 
+    #define FlushIOStream() std::ofstream &cout = *rout;
+
     /**
      * @brief 用于注册标算程序
      * @warning 注意，注册过程只需要调用一次
@@ -166,7 +168,7 @@ namespace Generator
      * @warning 请注意，答案文件文件名会有强制后缀.ans
     */
     void AutoGenerate( string format, 
-                       int startLabel, int endLabel, void (*custom)(int nowLabel),
+                       int startLabel, int endLabel, void (*custom)(int),
                        bool enableStd = false )
     {
         char buffer[1024];
